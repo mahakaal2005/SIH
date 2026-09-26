@@ -108,6 +108,7 @@ export function AppShell() {
               <NavItem to={routes.officerRules} icon={<SlidersHorizontal aria-hidden className="size-5" />} label={t('officer.nav.rules')} />
             </nav>
           )}
+          <DevPanel />
           {pathname !== routes.language && <LanguageToggle />}
           {user && (
             <Button variant="ghost" size="icon" className="size-11" onClick={logout} aria-label={t('nav.logout')}>
@@ -145,7 +146,6 @@ export function AppShell() {
           </div>
         </nav>
       )}
-      <DevPanel />
     </div>
   )
 }

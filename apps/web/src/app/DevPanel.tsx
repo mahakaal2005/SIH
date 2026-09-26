@@ -37,12 +37,7 @@ export function DevPanel() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon"
-          aria-label={t('dev.open')}
-          className="fixed bottom-24 left-3 z-40 size-11 rounded-full bg-card shadow-md md:bottom-4"
-        >
+        <Button variant="ghost" size="icon" aria-label={t('dev.open')} className="size-11 text-muted-foreground">
           <SlidersHorizontal aria-hidden />
         </Button>
       </SheetTrigger>

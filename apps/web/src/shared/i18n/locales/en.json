@@ -255,5 +255,130 @@
       "partners": "Partner health",
       "rules": "Scheme rules"
     }
+  },
+  "onboarding": {
+    "login": {
+      "title": "Log in with your mobile number",
+      "lead": "We send a 6-digit code by SMS. No password needed.",
+      "phoneLabel": "Mobile number",
+      "sendCode": "Send code",
+      "otpTitle": "Enter the code",
+      "otpLead": "We sent a 6-digit code to {{sentTo}}.",
+      "otpLabel": "6-digit code",
+      "verify": "Log in",
+      "changeNumber": "Change number",
+      "devHint": "Demo code: {{code}}",
+      "free": "This service is free. You do not need an agent, and nobody can charge you for it."
+    },
+    "profile": {
+      "title": "Tell us about yourself",
+      "lead": "We use this once to find the schemes you can get. It takes about 3 minutes.",
+      "assisted": "I'm filling this in for someone else",
+      "stepOf": "Step {{n}} of {{total}}",
+      "step": {
+        "about": "About you",
+        "plan": "Your plan",
+        "money": "Money and loans"
+      },
+      "save": "See my schemes",
+      "years": "years",
+      "districtPlaceholder": "Type the district name",
+      "districtNone": "No district matches. Check the spelling.",
+      "districtAlias": "{{alias}} is now called {{district}}",
+      "sopCost": "The government plan for this project costs {{amount}}.",
+      "useSopCost": "Use {{amount}}",
+      "costHint": "Add up machines, stock and setup costs.",
+      "groupHint": "PM-AJAY projects run as a group of 3 to 10 people, or as a cluster where each person has their own loan.",
+      "incomeHint": "Add up what everyone in the family earns in a year. A rough figure is fine.",
+      "privacy": "Your caste and income are used only to check the scheme rules. They are never sent to any AI system.",
+      "gender": {
+        "female": "Woman",
+        "male": "Man",
+        "transgender": "Transgender"
+      },
+      "caste": {
+        "SC": "Scheduled Caste (SC)",
+        "ST": "Scheduled Tribe (ST)",
+        "OBC": "Other Backward Class (OBC)",
+        "GEN": "General"
+      },
+      "area": {
+        "rural": "Village",
+        "urban": "Town or city"
+      },
+      "educationLevel": {
+        "none": "No schooling",
+        "primary": "Class 1 to 5",
+        "middle": "Class 6 to 8",
+        "secondary": "Class 9 to 10",
+        "higher_secondary": "Class 11 to 12",
+        "graduate": "Graduate",
+        "postgraduate": "Postgraduate"
+      },
+      "purpose": {
+        "business": "Start or grow a business",
+        "education": "Pay for studies"
+      },
+      "q": {
+        "fullName": "Your full name",
+        "fullName_assisted": "Their full name",
+        "age": "Your age",
+        "age_assisted": "Their age",
+        "gender": "You are",
+        "gender_assisted": "They are",
+        "casteCategory": "Your category",
+        "casteCategory_assisted": "Their category",
+        "districtId": "Your district",
+        "districtId_assisted": "Their district",
+        "area": "Where do you live?",
+        "area_assisted": "Where do they live?",
+        "education": "How far did you study?",
+        "education_assisted": "How far did they study?",
+        "isLiterate": "Can you read and write?",
+        "isLiterate_assisted": "Can they read and write?",
+        "purpose": "What do you need the money for?",
+        "purpose_assisted": "What do they need the money for?",
+        "activityId": "What work do you want to do?",
+        "activityId_assisted": "What work do they want to do?",
+        "estimatedCost": "How much will it cost in total?",
+        "estimatedCost_assisted": "How much will their project cost in total?",
+        "courseFee": "Total fee for the whole course",
+        "courseFee_assisted": "Total fee for their whole course",
+        "willingGroupOrCluster": "Are you ready to work with others in a group or cluster?",
+        "willingGroupOrCluster_assisted": "Are they ready to work with others in a group or cluster?",
+        "isExistingBusiness": "Is this business already running?",
+        "isExistingBusiness_assisted": "Is their business already running?",
+        "annualFamilyIncome": "Family income in a year",
+        "annualFamilyIncome_assisted": "Their family income in a year",
+        "isDefaulter": "Do you have an unpaid loan from the SC finance corporation?",
+        "isDefaulter_assisted": "Do they have an unpaid loan from the SC finance corporation?",
+        "settledViaOTS": "Was an earlier corporation loan closed by one-time settlement?",
+        "settledViaOTS_assisted": "Was an earlier corporation loan of theirs closed by one-time settlement?",
+        "alreadyFinancedElsewhere": "Has another government scheme already paid for this project?",
+        "alreadyFinancedElsewhere_assisted": "Has another government scheme already paid for their project?",
+        "hasDisability": "Do you have a disability?",
+        "hasDisability_assisted": "Do they have a disability?"
+      },
+      "error": {
+        "fullName": "Write the full name (at least 2 letters).",
+        "age": "Enter an age between 14 and 100.",
+        "gender": "Choose one.",
+        "casteCategory": "Choose one.",
+        "districtId": "Choose a district from the list.",
+        "area": "Choose one.",
+        "education": "Choose one.",
+        "isLiterate": "Choose yes or no.",
+        "purpose": "Choose one.",
+        "activityId": "Choose the work you want to do.",
+        "estimatedCost": "Enter the cost in rupees (at least ₹1,000).",
+        "willingGroupOrCluster": "Choose yes or no.",
+        "isExistingBusiness": "Choose yes or no.",
+        "annualFamilyIncome": "Enter the yearly income in rupees. Enter 0 if there is none.",
+        "isDefaulter": "Choose yes or no.",
+        "settledViaOTS": "Choose yes or no.",
+        "alreadyFinancedElsewhere": "Choose yes or no.",
+        "hasDisability": "Choose yes or no."
+      }
+    }
   }
 }

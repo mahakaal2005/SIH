@@ -1,10 +1,12 @@
 import { useTranslation } from 'react-i18next'
-import { createBrowserRouter, Link, useLocation } from 'react-router'
+import { createBrowserRouter, Link, useLocation, type RouteObject } from 'react-router'
 import { routes } from '@/core/router/routes'
 import { ErrorBoundary } from '@/shared/components/ErrorBoundary'
 import { Screen } from '@/shared/components/Screen'
 import { AppShell } from './AppShell'
-import { HomeRedirect } from './guards'
+import { LoginScreen } from '@/features/onboarding/presentation/LoginScreen'
+import { ProfileScreen } from '@/features/onboarding/presentation/ProfileScreen'
+import { HomeRedirect, RequireLanguage, RequireRole } from './guards'
 import { LanguageScreen } from './LanguageScreen'
 
 function NotFound() {
@@ -27,13 +29,17 @@ function ShellWithBoundary() {
   )
 }
 
-export const router = createBrowserRouter([
+export const appRoutes: RouteObject[] = [
   {
     element: <ShellWithBoundary />,
     children: [
       { path: routes.home, element: <HomeRedirect /> },
       { path: routes.language, element: <LanguageScreen /> },
+      { path: routes.login, element: <RequireLanguage><LoginScreen /></RequireLanguage> },
+      { path: routes.profile, element: <RequireLanguage><RequireRole roles={['citizen']}><ProfileScreen /></RequireRole></RequireLanguage> },
       { path: '*', element: <NotFound /> },
     ],
   },
-])
+]
+
+export const router = createBrowserRouter(appRoutes)
