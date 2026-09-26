@@ -1,0 +1,259 @@
+{
+  "app": {
+    "name": "Yojna Sarthi",
+    "tagline": "Find the scheme that fits, see what it really costs, and track your application.",
+    "skipToContent": "Skip to content"
+  },
+  "common": {
+    "next": "Next",
+    "back": "Back",
+    "retry": "Try again",
+    "loading": "Loading…",
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "yes": "Yes",
+    "no": "No",
+    "seededData": "Demo data",
+    "seededDataHint": "No public source exists for this value yet. It is a placeholder that follows the published format.",
+    "perMonth": "per month",
+    "months": "{{count}} months",
+    "km": "{{value}} km"
+  },
+  "language": {
+    "title": "Choose your language",
+    "subtitle": "You can change this later.",
+    "en": "English",
+    "hi": "हिन्दी",
+    "switch": "Language"
+  },
+  "nav": {
+    "home": "Home",
+    "schemes": "Schemes",
+    "status": "My application",
+    "verify": "Check a letter",
+    "officer": "Officer desk",
+    "logout": "Log out",
+    "menu": "Menu"
+  },
+  "journey": {
+    "label": "Your progress",
+    "profile": "About you",
+    "schemes": "Schemes",
+    "cost": "Cost",
+    "partner": "Where to apply",
+    "documents": "Documents",
+    "submit": "Submit"
+  },
+  "errors": {
+    "generic": "Something went wrong. Check your connection and try again.",
+    "network": "Could not reach the server. Check your connection and try again.",
+    "auth": {
+      "phoneInvalid": "Enter a 10-digit mobile number starting with 6, 7, 8 or 9.",
+      "otpInvalid": "That code is wrong or has expired. Request a new code."
+    },
+    "rules": {
+      "unknownScheme": "This scheme does not exist.",
+      "versionNotIncreasing": "The new version number must be higher than the current one."
+    },
+    "application": {
+      "notFound": "Application not found.",
+      "illegalTransition": "This action is not allowed at the current stage."
+    },
+    "digilocker": {
+      "unsupported": "This document is not available from DigiLocker. Upload a copy instead."
+    }
+  },
+  "rule": {
+    "activityMatch": {
+      "pass": "This project matches your business idea",
+      "fail": "Your business idea is different from this project"
+    },
+    "scOnly": {
+      "pass": "For Scheduled Caste applicants",
+      "fail": "Only for Scheduled Caste applicants"
+    },
+    "upResident": {
+      "pass": "You live in Uttar Pradesh",
+      "fail": "Only for residents of the district you apply in"
+    },
+    "incomeUpTo5L": {
+      "pass": "Family income is within ₹5 lakh",
+      "fail": "Family income must be ₹5 lakh a year or less"
+    },
+    "adult": {
+      "pass": "You are 18 or older",
+      "fail": "You must be 18 or older"
+    },
+    "age18to50": {
+      "pass": "Your age is between 18 and 50",
+      "fail": "Only for ages 18 to 50"
+    },
+    "literate": {
+      "pass": "You can read and write",
+      "fail": "You need to be able to read and write for this project"
+    },
+    "groupWilling": {
+      "pass": "You are ready to work in a group or cluster",
+      "fail": "This project runs as a group or cluster"
+    },
+    "notDefaulter": {
+      "pass": "No unpaid loan with the corporation",
+      "fail": "Not available if you have an unpaid corporation loan"
+    },
+    "noOTS": {
+      "pass": "No earlier loan settled by one-time settlement",
+      "fail": "Not available if an earlier loan was closed by one-time settlement"
+    },
+    "notFinancedElsewhere": {
+      "pass": "Project not funded by another scheme",
+      "fail": "Not available if another scheme already funds this project"
+    },
+    "womenOnly": {
+      "pass": "Reserved for SC women",
+      "fail": "Only for SC women"
+    },
+    "purposeBusiness": {
+      "pass": "For starting or running a business",
+      "fail": "Only for a business, not for education"
+    },
+    "purposeEducation": {
+      "pass": "For education",
+      "fail": "Only for education"
+    },
+    "microCostCap": {
+      "pass": "Project cost is within ₹1.40 lakh",
+      "fail": "Project cost must be ₹1.40 lakh or less"
+    },
+    "termCostRange": {
+      "pass": "Project cost is between ₹1.40 lakh and ₹50 lakh",
+      "fail": "Project cost must be between ₹1.40 lakh and ₹50 lakh"
+    },
+    "unyCostCap": {
+      "pass": "Project cost is within ₹5 lakh",
+      "fail": "Project cost must be ₹5 lakh or less"
+    },
+    "amyNoSca": {
+      "pass": "Available in your state",
+      "fail": "Only in states without a working SC finance corporation. Uttar Pradesh has UPSCFDC, so apply there instead"
+    },
+    "pmegpNewUnit": {
+      "pass": "For a new unit",
+      "fail": "Only for a new unit, not an existing business"
+    },
+    "pmegpMfgCap": {
+      "pass": "Manufacturing cost is within ₹50 lakh",
+      "fail": "Manufacturing projects must cost ₹50 lakh or less"
+    },
+    "pmegpServiceCap": {
+      "pass": "Project cost is within ₹20 lakh",
+      "fail": "Service and trade projects must cost ₹20 lakh or less"
+    },
+    "pmegpEducationMfg": {
+      "pass": "Class VIII pass",
+      "fail": "Class VIII pass needed for manufacturing above ₹10 lakh"
+    },
+    "pmegpEducationService": {
+      "pass": "Class VIII pass",
+      "fail": "Class VIII pass needed for service projects above ₹5 lakh"
+    },
+    "mudraCap": {
+      "pass": "Loan need is within ₹20 lakh",
+      "fail": "Mudra loans go up to ₹20 lakh"
+    },
+    "nearMiss": "You miss this by {{gap}}. The limit is {{limit}}."
+  },
+  "prio": {
+    "women": "Priority for women",
+    "divyang": "Priority for persons with disabilities",
+    "transgender": "Priority for transgender applicants in UP",
+    "lowIncome": "Priority for family income up to ₹2.5 lakh"
+  },
+  "stage": {
+    "submitted": "Submitted",
+    "pre_scrutiny": "Pre-scrutiny",
+    "dlpac": "District committee (DLPAC)",
+    "bank": "Bank decision",
+    "sanctioned": "Loan sanctioned",
+    "disbursed": "Money released",
+    "srf_lock": "Grant held in reserve fund",
+    "completed": "Completed",
+    "rejected": "Not approved",
+    "returned": "Sent back for correction"
+  },
+  "notify": {
+    "submitted": "Application {{receiptNo}} received. It is now waiting for pre-scrutiny.",
+    "stage": {
+      "submitted": "Application {{receiptNo}} received.",
+      "pre_scrutiny": "Application {{receiptNo}} is back in pre-scrutiny.",
+      "dlpac": "Application {{receiptNo}} passed pre-scrutiny and is with the district committee.",
+      "bank": "Application {{receiptNo}} has been sent to the bank. The bank must decide within 5 days.",
+      "sanctioned": "Loan for application {{receiptNo}} is sanctioned.",
+      "disbursed": "Money for application {{receiptNo}} has been released.",
+      "srf_lock": "Money for application {{receiptNo}} is released. Your grant is held in the reserve fund for 18 months.",
+      "completed": "Application {{receiptNo}} is complete.",
+      "rejected": "Application {{receiptNo}} was not approved. Open the app to see the reason and what to do next.",
+      "returned": "Application {{receiptNo}} was sent back for correction. Open the app to see what to fix."
+    }
+  },
+  "reject": {
+    "cibil": "Credit score check did not pass.",
+    "documents": "Some documents were missing or could not be verified.",
+    "defaulter": "The corporation's records show an unpaid earlier loan.",
+    "pennyDrop": "The bank account could not be verified."
+  },
+  "preflight": {
+    "cibil": {
+      "pass": "Credit score {{score}}: looks fine",
+      "fail": "Credit score {{score}}: likely to be rejected"
+    },
+    "pennyDrop": {
+      "pass": "Bank account verified"
+    },
+    "noDefault": {
+      "pass": "No unpaid corporation loan",
+      "fail": "An unpaid corporation loan was found"
+    }
+  },
+  "shell": {
+    "booting": "Opening Yojna Sarthi…",
+    "bootFailed": "Yojna Sarthi could not start. Reload the page to try again.",
+    "reload": "Reload",
+    "signedInAs": "Signed in as {{phone}}",
+    "citizenNav": "Main",
+    "officerNav": "Officer"
+  },
+  "dev": {
+    "open": "Demo controls",
+    "title": "Demo controls",
+    "hint": "These controls exist only for the demo. They simulate the backend.",
+    "failTitle": "Simulate a failing service",
+    "reset": "Reset all demo data",
+    "resetDone": "Demo data reset",
+    "accounts": "Demo accounts (OTP 123456)",
+    "citizenAccount": "Citizen: any mobile number",
+    "officerAccount": "{{district}} officer: {{phone}}",
+    "hqAccount": "HQ admin: {{phone}}",
+    "repo": {
+      "auth": "Login",
+      "catalog": "Scheme catalog",
+      "profile": "Profile",
+      "recommendation": "Recommendations",
+      "partner": "Partner search",
+      "document": "Documents",
+      "application": "Applications",
+      "notification": "Notifications"
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "This page does not exist.",
+    "home": "Go to home"
+  },
+  "officer": {
+    "nav": {
+      "partners": "Partner health",
+      "rules": "Scheme rules"
+    }
+  }
+}

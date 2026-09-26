@@ -1,0 +1,39 @@
+import { useTranslation } from 'react-i18next'
+import { createBrowserRouter, Link, useLocation } from 'react-router'
+import { routes } from '@/core/router/routes'
+import { ErrorBoundary } from '@/shared/components/ErrorBoundary'
+import { Screen } from '@/shared/components/Screen'
+import { AppShell } from './AppShell'
+import { HomeRedirect } from './guards'
+import { LanguageScreen } from './LanguageScreen'
+
+function NotFound() {
+  const { t } = useTranslation()
+  return (
+    <Screen title={t('notFound.title')} lead={t('notFound.body')}>
+      <Link to={routes.home} className="inline-flex h-11 items-center rounded-lg bg-primary px-4 text-primary-foreground">
+        {t('notFound.home')}
+      </Link>
+    </Screen>
+  )
+}
+
+function ShellWithBoundary() {
+  const { pathname } = useLocation()
+  return (
+    <ErrorBoundary resetKey={pathname}>
+      <AppShell />
+    </ErrorBoundary>
+  )
+}
+
+export const router = createBrowserRouter([
+  {
+    element: <ShellWithBoundary />,
+    children: [
+      { path: routes.home, element: <HomeRedirect /> },
+      { path: routes.language, element: <LanguageScreen /> },
+      { path: '*', element: <NotFound /> },
+    ],
+  },
+])
