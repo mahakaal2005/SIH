@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How SC Credit Actually Works</title>
+<style>
+:root{
+  --bg:#fbfaf8; --surface:#ffffff; --ink:#1a1714; --muted:#6b6560; --line:#e6e1da;
+  --pur:#6b4d9e; --purbg:#f2edf9; --teal:#0d7a6f; --tealbg:#e8f5f3;
+  --cor:#c2410c; --corbg:#fef1e9; --amb:#a16207; --ambbg:#fdf6e3;
+  --red:#b3261e; --redbg:#fdecea; --grn:#2d6a35; --grnbg:#eef6ef;
+  --maxw:820px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#16140f; --surface:#211e18; --ink:#f0ece5; --muted:#a39c92; --line:#332f27;
+    --purbg:#251d33; --tealbg:#0d2624; --corbg:#2b1a10; --ambbg:#2a2210;
+    --redbg:#2d1614; --grnbg:#16240f;
+    --pur:#b79ae0; --teal:#5bc4b6; --cor:#f08c53; --amb:#dbb45c; --red:#f28b82; --grn:#8cc98f;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16140f; --surface:#211e18; --ink:#f0ece5; --muted:#a39c92; --line:#332f27;
+  --purbg:#251d33; --tealbg:#0d2624; --corbg:#2b1a10; --ambbg:#2a2210;
+  --redbg:#2d1614; --grnbg:#16240f;
+  --pur:#b79ae0; --teal:#5bc4b6; --cor:#f08c53; --amb:#dbb45c; --red:#f28b82; --grn:#8cc98f;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.65 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 16px}
+header.hero{padding:56px 0 32px;border-bottom:1px solid var(--line)}
+h1{font-size:clamp(28px,5vw,42px);line-height:1.15;margin:0 0 12px;letter-spacing:-.02em}
+.sub{color:var(--muted);font-size:17px;margin:0}
+.meta{color:var(--muted);font-size:13px;margin-top:20px}
+nav{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--line);z-index:20;padding:10px 0}
+nav .wrap{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav a{
+  flex:0 0 auto;font-size:13px;text-decoration:none;color:var(--muted);
+  padding:5px 10px;border-radius:6px;white-space:nowrap
+}
+nav a:hover{background:var(--surface);color:var(--ink)}
+section{padding:44px 0;border-bottom:1px solid var(--line)}
+h2{font-size:clamp(21px,3.4vw,27px);margin:0 0 6px;letter-spacing:-.01em}
+h3{font-size:17px;margin:28px 0 8px}
+.step{
+  display:inline-block;font-size:11px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--pur);background:var(--purbg);
+  padding:3px 9px;border-radius:4px;margin-bottom:12px
+}
+p{margin:0 0 14px}
+.simple{
+  background:var(--purbg);border-left:3px solid var(--pur);
+  padding:14px 16px;border-radius:0 7px 7px 0;margin:18px 0
+}
+.simple b{color:var(--pur);display:block;font-size:12px;letter-spacing:.06em;
+  text-transform:uppercase;margin-bottom:5px}
+.ask{
+  border:1px dashed var(--amb);background:var(--ambbg);
+  padding:14px 16px;border-radius:7px;margin:18px 0
+}
+.ask b{color:var(--amb);display:block;font-size:12px;letter-spacing:.06em;
+  text-transform:uppercase;margin-bottom:5px}
+.box{padding:14px 16px;border-radius:8px;margin:14px 0;border:1px solid var(--line)}
+.box.red{background:var(--redbg);border-color:var(--red)}
+.box.grn{background:var(--grnbg);border-color:var(--grn)}
+.box.teal{background:var(--tealbg);border-color:var(--teal)}
+.box.cor{background:var(--corbg);border-color:var(--cor)}
+.stat{font-size:clamp(30px,6vw,44px);font-weight:800;line-height:1;letter-spacing:-.03em}
+.stat.red{color:var(--red)} .stat.grn{color:var(--grn)} .stat.cor{color:var(--cor)}
+.statlabel{color:var(--muted);font-size:14px;margin-top:6px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin:18px 0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:16px}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:16px 0}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.bar{height:9px;border-radius:5px;background:var(--line);overflow:hidden;margin-top:5px}
+.bar span{display:block;height:100%;border-radius:5px}
+.flow{
+  background:var(--surface);border:1px solid var(--line);border-radius:9px;
+  padding:18px;margin:18px 0;font-size:14px
+}
+.flow .lvl{display:flex;gap:12px;align-items:flex-start;padding:9px 0}
+.flow .tag{
+  flex:0 0 96px;font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--muted);padding-top:3px
+}
+.flow .body{flex:1}
+.flow .name{font-weight:650}
+.flow .desc{color:var(--muted);font-size:13px}
+.arrow{color:var(--muted);text-align:center;font-size:15px;line-height:1;padding:1px 0 1px 108px}
+.calc{background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:18px;margin:18px 0}
+.calc label{display:block;font-size:13px;color:var(--muted);margin:12px 0 5px}
+.calc input[type=range]{width:100%;accent-color:var(--pur)}
+.calc .val{font-weight:650;color:var(--ink)}
+.out{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));margin-top:16px}
+.out div{background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:11px}
+.out .k{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.out .v{font-size:19px;font-weight:700;margin-top:3px;font-variant-numeric:tabular-nums}
+ul,ol{margin:0 0 14px;padding-left:22px}
+li{margin-bottom:6px}
+.src{color:var(--muted);font-size:12.5px;font-style:italic;margin-top:6px}
+footer{padding:36px 0 64px;color:var(--muted);font-size:13px}
+.toggle{
+  position:fixed;right:14px;bottom:14px;z-index:30;background:var(--surface);
+  color:var(--ink);border:1px solid var(--line);border-radius:20px;
+  padding:7px 13px;font-size:12px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.09)
+}
+@media(max-width:560px){
+  .flow .tag{flex-basis:68px;font-size:10px}
+  .arrow{padding-left:80px}
+}
+</style>
+</head>
+<body>
+
+<button class="toggle" onclick="tog()">◐ theme</button>
+
+<div class="wrap">
+<header class="hero">
+  <h1>How money actually reaches an SC entrepreneur</h1>
+  <p class="sub">And the four places it stops. Explained from zero, with the government's own numbers.</p>
+  <p class="meta">Team Zenith · KIET · SIH PS 26092 · Ministry of Social Justice &amp; Empowerment · Updated 26 September 2026</p>
+</header>
+</div>
+
+<nav><div class="wrap">
+  <a href="#s1">The goal</a><a href="#s2">The money</a><a href="#s3">The chain</a>
+  <a href="#s4">Why a middleman</a><a href="#s5">The gate</a><a href="#s6">Cost</a>
+  <a href="#s7">Break 1</a><a href="#s8">Break 2</a><a href="#s9">Break 3</a>
+  <a href="#s10">Break 4</a><a href="#s11">Full picture</a>
+</div></nav>
+
+<div class="wrap">
+
+<section id="s1">
+  <span class="step">Step 1</span>
+  <h2>What the government is trying to do</h2>
+  <p>A person from a Scheduled Caste family wants to start something small. A tailoring unit. An e-rickshaw. A kirana shop. A dairy with two cows.</p>
+  <p>A normal bank would charge them somewhere between 11% and 18% a year, and would usually ask for collateral they do not have. So the government built a parallel, cheaper channel: loans at <b>6.5% to 8%</b>, covering up to <b>90%</b> of the project cost, for families earning up to <b>₹5 lakh a year</b>.</p>
+  <div class="simple">
+    <b>Say it simply</b>
+    The government is trying to be a kinder bank for people the normal bank would turn away.
+  </div>
+  <div class="box teal">
+    <b>Who runs it:</b> NSFDC — the National Scheduled Castes Finance and Development Corporation. Set up in 1989, sits under the Ministry of Social Justice and Empowerment. Not a bank. Not for profit.
+  </div>
+  <p class="src">Income ceiling of ₹5.00 lakh, both rural and urban, effective 07.01.2026. Source: Standing Committee on Social Justice and Empowerment, 25th Report, presented to Lok Sabha 12.08.2026.</p>
+</section>
+
+<section id="s2">
+  <span class="step">Step 2</span>
+  <h2>How much money are we talking about?</h2>
+  <p>Less than you would guess. This is the first thing that surprises people.</p>
+  <div class="grid">
+    <div class="card"><div class="stat">₹775cr</div><div class="statlabel">NSFDC lent in all of FY26</div></div>
+    <div class="card"><div class="stat">59,002</div><div class="statlabel">people funded that year</div></div>
+    <div class="card"><div class="stat cor">₹1.31L</div><div class="statlabel">average loan size</div></div>
+  </div>
+  <div class="box cor">
+    For scale: <b>PM Mudra lends roughly 650 times more per year</b> — about ₹5.03 lakh crore. NSFDC is a very small pipe carrying very cheap water.
+  </div>
+  <h3>And the tank is not being refilled</h3>
+  <p>NSFDC lends from capital the government gave it plus money coming back from old loans. Fresh capital since 2019-20:</p>
+  <table>
+    <tr><th>Year</th><th class="num">Fresh equity</th><th class="num">Disbursed</th><th class="num">Beneficiaries</th></tr>
+    <tr><td>2019-20</td><td class="num">₹14.6 cr</td><td class="num">₹681.50 cr</td><td class="num">83,970</td></tr>
+    <tr><td>2020-21</td><td class="num">₹0</td><td class="num">₹681.50 cr</td><td class="num">94,002</td></tr>
+    <tr><td>2021-22</td><td class="num">₹0</td><td class="num">₹572.01 cr</td><td class="num">76,219</td></tr>
+    <tr><td>2022-23</td><td class="num">₹0</td><td class="num">₹635.95 cr</td><td class="num">83,988</td></tr>
+    <tr><td>2023-24</td><td class="num">₹15.0 cr</td><td class="num">₹714.45 cr</td><td class="num">85,372</td></tr>
+    <tr><td>2024-25</td><td class="num">₹0</td><td class="num">₹611.78 cr</td><td class="num"><b>41,750</b></td></tr>
+    <tr><td>2025-26</td><td class="num">₹0</td><td class="num">₹775.26 cr</td><td class="num">59,002</td></tr>
+  </table>
+  <p>NSFDC told Parliament directly: its portfolio earns an average <b>3.1% a year</b>, so without fresh equity its asset base grows about 3% while inflation runs 4 to 4.5%. In its own words, it <i>"may not grow"</i> and cannot <i>"meet even the inflation."</i></p>
+  <div class="ask">
+    <b>A judge will ask</b>
+    "So it is shrinking in real terms?" — Yes. And beneficiaries nearly halved in FY25, which the Committee links directly to the equity freeze.
+  </div>
+</section>
+
+<section id="s3">
+  <span class="step">Step 3</span>
+  <h2>The chain the money travels down</h2>
+  <div class="flow">
+    <div class="lvl"><div class="tag">Level 1</div><div class="body">
+      <div class="name">Ministry of Social Justice &amp; Empowerment</div>
+      <div class="desc">₹15,357 cr budget. Sets policy. Lends to nobody.</div></div></div>
+    <div class="arrow">↓</div>
+    <div class="lvl"><div class="tag">Level 2</div><div class="body">
+      <div class="name">Department of Social Justice &amp; Empowerment</div>
+      <div class="desc">₹13,688 cr. About half goes to scholarships. The three finance corporations get a token ₹1 lakh each.</div></div></div>
+    <div class="arrow">↓</div>
+    <div class="lvl"><div class="tag">Level 3</div><div class="body">
+      <div class="name">NSFDC — the wholesaler</div>
+      <div class="desc">₹1,515 cr paid-up capital. Lends at 5% to partners. <b>Never lends to a person.</b></div></div></div>
+    <div class="arrow">↓</div>
+    <div class="lvl"><div class="tag">Level 4</div><div class="body">
+      <div class="name">91 channel partners — the shops</div>
+      <div class="desc">38 State Channelizing Agencies + 53 banks, RRBs and NBFC-MFIs. They add their margin and lend onward.</div></div></div>
+    <div class="arrow">↓</div>
+    <div class="lvl"><div class="tag">Level 5</div><div class="body">
+      <div class="name">The person</div>
+      <div class="desc">Pays 6.5%, 8%, or up to 15% — depending entirely on which door they walked through.</div></div></div>
+  </div>
+  <div class="simple">
+    <b>Say it simply</b>
+    NSFDC is a wholesaler. It sells only to shops, never to customers. The shop decides your price.
+  </div>
+</section>
+
+<section id="s4">
+  <span class="step">Step 4</span>
+  <h2>Why the middleman exists</h2>
+  <p>It looks wasteful until you see the arithmetic. NSFDC has <b>70 sanctioned posts</b> and only <b>4 liaison centres</b> for the entire country. It cannot assess a farmer in Sitapur or recover a loan in Bahraich from Delhi.</p>
+  <p>The State Channelizing Agency is the state's own SC finance corporation, with district offices and staff who know the ground. That is the theory.</p>
+  <div class="box red">
+    <b>In practice:</b> SCAs are under-performing or non-performing in <b>14 states</b>. Telangana and Ladakh have never appointed one at all. NSFDC has been quietly routing around them, growing its alternate bank partners from 17 in 2016 to 53 today.
+  </div>
+  <div class="ask">
+    <b>A judge will ask</b>
+    "Did adding banks fix it?" — No. Beneficiaries through the SCA channel fell from 1,18,002 in FY25 to <b>61,394 in FY26</b>, roughly halving in one year. And those bank partners are excluded from any Credit Guarantee Scheme, so they cannot lend large amounts safely.
+  </div>
+</section>
+
+<section id="s5">
+  <span class="step">Step 5</span>
+  <h2>The gate nobody tells you about</h2>
+  <p>Before a partner can receive fresh money from NSFDC, it must clear published conditions:</p>
+  <table>
+    <tr><th>Partner type</th><th>Condition</th></tr>
+    <tr><td>SCA / CA</td><td>Government or bank guarantee in place</td></tr>
+    <tr><td>SCA / CA</td><td><b>No overdues to NSFDC older than one year</b></td></tr>
+    <tr><td>SCA / CA</td><td><b>At least 80% of previous funds already used</b></td></tr>
+    <tr><td>Regional Rural Bank</td><td>Net NPA below 15% in 3 of the last 6 years</td></tr>
+    <tr><td>Public Sector Bank</td><td>No overdues at the time of disbursement</td></tr>
+  </table>
+  <div class="box red">
+    <b>This is the heart of the problem statement.</b> A citizen can be perfectly eligible, pick the right scheme, walk into the nearest partner office — and that partner may be blocked from receiving funds. Nobody tells them. There is no public list. They simply wait.
+  </div>
+</section>
+
+<section id="s6">
+  <span class="step">Step 6</span>
+  <h2>What it actually costs</h2>
+  <p>NSFDC lends to the partner at 5%. The partner adds a margin — usually 4%, but up to 10% on microfinance, because, as NSFDC told Parliament, <i>"failure in microfinance is a necessary incidence."</i> The margin is priced for expected defaults.</p>
+  <p>So the same "NSFDC loan" costs different people very different amounts. Parliament called the 15% rate <b>"very high"</b> and a reason people do not borrow.</p>
+
+  <div class="calc">
+    <div style="font-weight:650;margin-bottom:4px">Try it</div>
+    <div style="color:var(--muted);font-size:13px">Same loan, different doors.</div>
+    <label>Loan amount: <span class="val" id="pv">₹1,25,000</span></label>
+    <input type="range" id="p" min="25000" max="4500000" step="25000" value="125000" oninput="calc()">
+    <label>Interest rate: <span class="val" id="rv">8%</span></label>
+    <input type="range" id="r" min="6.5" max="15" step="0.5" value="8" oninput="calc()">
+    <label>Repayment period: <span class="val" id="yv">5 years</span></label>
+    <input type="range" id="y" min="1" max="10" step="1" value="5" oninput="calc()">
+    <label>Moratorium before first payment: <span class="val" id="mv">6 months</span></label>
+    <input type="range" id="m" min="0" max="12" step="3" value="6" oninput="calc()">
+    <div class="out">
+      <div><div class="k">Monthly</div><div class="v" id="emi">—</div></div>
+      <div><div class="k">Total interest</div><div class="v" id="ti">—</div></div>
+      <div><div class="k">Total repaid</div><div class="v" id="tr">—</div></div>
+    </div>
+  </div>
+  <div class="ask">
+    <b>A judge will ask</b>
+    "Can the borrower see this before applying?" — No. No EMI tool exists on any NSFDC channel. We checked every portal.
+  </div>
+</section>
+
+<section id="s7">
+  <span class="step">Break 1</span>
+  <h2>Almost nobody knows this exists</h2>
+  <div class="grid">
+    <div class="card"><div class="stat red">0.15%</div><div class="statlabel">of SC households reached in a year</div></div>
+    <div class="card"><div class="stat">61.1%</div><div class="statlabel">of actual borrowers heard from a friend or relative</div></div>
+    <div class="card"><div class="stat red">2.6%</div><div class="statlabel">heard from an official awareness camp</div></div>
+  </div>
+  <p>In ten years NSFDC ran <b>79 marketing fairs</b>, reaching <b>1,170 beneficiaries</b> and generating ₹10.5 crore of sales. The Committee said it was "not satisfied."</p>
+  <p class="src">Source: MoSJE-commissioned evaluation of NSFDC, survey of 3,300 beneficiaries across 5 states, 2020; Standing Committee 25th Report, 2026.</p>
+</section>
+
+<section id="s8">
+  <span class="step">Break 2</span>
+  <h2>Picking the wrong scheme quietly halves your chances</h2>
+  <p>Uttar Pradesh publishes a live dashboard for its PM-AJAY Grant-in-Aid scheme. It shows approval rates for each of the 16 approved project types. They are not close to equal.</p>
+  <table>
+    <tr><th>Project</th><th class="num">Approved</th><th class="num">Applied</th><th class="num">Rate</th></tr>
+    <tr><td>Women's home industry</td><td class="num">2,538</td><td class="num">5,726</td><td class="num"><b style="color:var(--grn)">44.3%</b><div class="bar"><span style="width:100%;background:var(--grn)"></span></div></td></tr>
+    <tr><td>Kiosk / kirana store</td><td class="num">4,470</td><td class="num">11,356</td><td class="num">39.4%<div class="bar"><span style="width:89%;background:var(--grn)"></span></div></td></tr>
+    <tr><td>Beauty parlour cluster</td><td class="num">4,030</td><td class="num">10,351</td><td class="num">38.9%<div class="bar"><span style="width:88%;background:var(--grn)"></span></div></td></tr>
+    <tr><td>Auto / e-rickshaw</td><td class="num">1,837</td><td class="num">4,891</td><td class="num">37.6%<div class="bar"><span style="width:85%;background:var(--amb)"></span></div></td></tr>
+    <tr><td>Solar panel installer</td><td class="num">406</td><td class="num">1,613</td><td class="num">25.2%<div class="bar"><span style="width:57%;background:var(--amb)"></span></div></td></tr>
+    <tr><td>Goat rearing</td><td class="num">316</td><td class="num">2,145</td><td class="num">14.7%<div class="bar"><span style="width:33%;background:var(--cor)"></span></div></td></tr>
+    <tr><td>Logistics vehicle driver</td><td class="num">273</td><td class="num">1,864</td><td class="num">14.6%<div class="bar"><span style="width:33%;background:var(--cor)"></span></div></td></tr>
+    <tr><td>Poultry</td><td class="num">17</td><td class="num">221</td><td class="num"><b style="color:var(--red)">7.7%</b><div class="bar"><span style="width:17%;background:var(--red)"></span></div></td></tr>
+  </table>
+  <div class="box red">
+    <div class="stat red">5.8×</div>
+    <div class="statlabel" style="margin-bottom:8px">difference in approval odds, based only on which project you tick</div>
+    Pick women's home industry and 44 in 100 get approved. Pick poultry and 8 do. <b>Nothing in the process tells the applicant this.</b>
+  </div>
+  <p class="src">Source: grant-in-aid.upscfdc.in, public dashboard, retrieved 26.09.2026. Project totals sum to exactly 73,888 and approvals to exactly 25,000, so the figures are internally consistent.</p>
+</section>
+
+<section id="s9">
+  <span class="step">Break 3</span>
+  <h2>Two in three applications get no answer at all</h2>
+  <p>The same UP dashboard publishes the full funnel. This is the number that should stop the room.</p>
+  <table>
+    <tr><th>Stage</th><th class="num">Applications</th><th class="num">Share</th></tr>
+    <tr><td>Applied</td><td class="num">73,888</td><td class="num">100%</td></tr>
+    <tr><td>Approved by pre-scrutiny</td><td class="num">25,000</td><td class="num">33.8%</td></tr>
+    <tr><td>Rejected by pre-scrutiny</td><td class="num">2,443</td><td class="num">3.3%</td></tr>
+    <tr><td><b>No decision of any kind</b></td><td class="num"><b>46,445</b></td><td class="num"><b style="color:var(--red)">62.9%</b></td></tr>
+  </table>
+  <div class="box red">
+    Among applications that <i>did</i> get a decision, <b>91.1% were approved.</b> The system is not rejecting people. <b>It is simply not deciding.</b> Nearly two in three applicants wait indefinitely, with no outcome and no reason.
+  </div>
+  <h3>And waiting is long even when it works</h3>
+  <div class="grid">
+    <div class="card"><div class="stat">~4 months</div><div class="statlabel">NSFDC, application to first instalment (2020 survey)</div></div>
+    <div class="card"><div class="stat">&gt;6 months</div><div class="statlabel">NSFDC in 2016-17 (Standing Committee)</div></div>
+    <div class="card"><div class="stat cor">~212 days</div><div class="statlabel">PMEGP end-to-end in 2026, against a 130-day expectation</div></div>
+  </div>
+  <p class="src">PMEGP timings: MSME Minister Jitan Ram Manjhi, Lok Sabha, 31 July 2026 — 58 days at the agency, 70 days at the bank, 84 days for subsidy release.</p>
+</section>
+
+<section id="s10">
+  <span class="step">Break 4</span>
+  <h2>Nobody upstream can see any of it</h2>
+  <p>NSFDC monitors 91 channel partners through 4 liaison centres. Its board has <b>9 of 15 seats vacant</b>. Staff vacancies rose from 21 to 27 between March and July 2026 — they are getting worse, not better.</p>
+  <p>A journalist asked the president of Madhya Pradesh's SC Finance Corporation how his own schemes were performing. His answer:</p>
+  <div class="box red" style="font-size:17px;font-style:italic">
+    "I am not aware of the progress of the schemes, I will be able to tell something only after I have statistics."
+  </div>
+  <p>In the same state: 6,027 people applied for a scheme with 2,000 places. 1,119 were funded. A separate scheme approved 21 projects and funded <b>zero</b>.</p>
+  <h3>The government's own diagnosis</h3>
+  <p>Asked in Parliament in February 2026 why funds go under-utilised, the government listed four reasons:</p>
+  <ol>
+    <li>Delays in beneficiary selection by State Channelizing Agencies</li>
+    <li>Time taken by beneficiaries to complete loan documentation</li>
+    <li>Non-receipt of utilisation information from district branches</li>
+    <li>Pending utilisation certificates</li>
+  </ol>
+  <div class="box teal">
+    Note what is <i>not</i> on that list: lack of demand, and lack of money. <b>The bottleneck is selection, paperwork, and information never travelling back up.</b>
+  </div>
+</section>
+
+<section id="s11">
+  <span class="step">The whole thing</span>
+  <h2>Where the chain breaks</h2>
+  <div class="flow">
+    <div class="lvl"><div class="tag" style="color:var(--red)">Break 1</div><div class="body">
+      <div class="name">Does she know it exists?</div>
+      <div class="desc">0.15% annual reach. 61.1% hear by word of mouth, 2.6% from official camps.</div></div></div>
+    <div class="arrow">↓</div>
+    <div class="lvl"><div class="tag" style="color:var(--red)">Break 2</div><div class="body">
+      <div class="name">Does she pick the right scheme?</div>
+      <div class="desc">5.8× swing in approval odds by project. No guidance offered anywhere.</div></div></div>
+    <div class="arrow">↓</div>
+    <div class="lvl"><div class="tag" style="color:var(--red)">Break 3</div><div class="body">
+      <div class="name">Does she reach a partner who can actually fund her?</div>
+      <div class="desc">14 states with failing SCAs. Published NPA and utilisation gates. No public list of who is blocked.</div></div></div>
+    <div class="arrow">↓</div>
+    <div class="lvl"><div class="tag" style="color:var(--red)">Break 4</div><div class="body">
+      <div class="name">Does anyone tell her what happened?</div>
+      <div class="desc">62.9% never get a decision. ~4 months when it works. No status visible to her, or to the officer.</div></div></div>
+  </div>
+  <div class="box cor">
+    <b>And the last break feeds the first.</b> Defaults make a partner ineligible. An ineligible partner turns away the next applicant. Less money flows back to NSFDC, which is already getting no fresh equity. <b>The failures compound in a loop, not a line.</b>
+  </div>
+  <h3>Outcomes are getting worse, not better</h3>
+  <table>
+    <tr><th>Evaluation cycle</th><th class="num">Beneficiaries who crossed the poverty line</th></tr>
+    <tr><td>2017-18 (13 states)</td><td class="num" style="color:var(--grn)">99.88%</td></tr>
+    <tr><td>2018-19 (9 states)</td><td class="num" style="color:var(--grn)">100%</td></tr>
+    <tr><td>2019-20 (5 states)</td><td class="num" style="color:var(--amb)">68.10%</td></tr>
+    <tr><td>2022-23 (10 states)</td><td class="num" style="color:var(--red)"><b>58.8%</b></td></tr>
+  </table>
+  <p>The newest cycle, 2025-26, covering 5,480 beneficiaries across 11 states, found that only <b>8.98%</b> saw their annual family income cross ₹3 lakh.</p>
+  <p>The Committee's own word for this was <i>"disheartening"</i>, noting NSFDC <i>"has not been able to bring the targeted section of society out of poverty."</i></p>
+</section>
+
+<footer>
+  <p><b>Sources.</b> Standing Committee on Social Justice and Empowerment, 25th Report on the functioning of NSFDC, presented to Lok Sabha 12.08.2026 · MoSJE-commissioned NSFDC evaluation study, 3,300 beneficiaries, 2020 · grant-in-aid.upscfdc.in public dashboard, retrieved 26.09.2026 · pmsuraj.dosje.gov.in public dashboard, retrieved 26.09.2026 · UPSCFDC SOP for PM-AJAY Grant-in-Aid, letter 646, 21.07.2025 · Union Budget 2026-27, Demand No. 93 · Lok Sabha replies, Feb 2026 and 31.07.2026 · The Mooknayak investigation into MP SC Finance Corporation.</p>
+  <p>Every figure here is from a government source. Nothing is estimated except where marked. Team Zenith, KIET Group of Institutions.</p>
+</footer>
+
+</div>
+
+<script>
+function tog(){
+  var r=document.documentElement;
+  var cur=r.getAttribute('data-theme');
+  if(!cur){
+    var dark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+    cur=dark?'dark':'light';
+  }
+  r.setAttribute('data-theme',cur==='dark'?'light':'dark');
+}
+function fmt(n){
+  n=Math.round(n);
+  var s=n.toString(), last3=s.slice(-3), rest=s.slice(0,-3);
+  if(rest) return '₹'+rest.replace(/\B(?=(\d{2})+(?!\d))/g,',')+','+last3;
+  return '₹'+last3;
+}
+function calc(){
+  var p=+document.getElementById('p').value,
+      r=+document.getElementById('r').value,
+      y=+document.getElementById('y').value,
+      m=+document.getElementById('m').value;
+  document.getElementById('pv').textContent=fmt(p);
+  document.getElementById('rv').textContent=r+'%';
+  document.getElementById('yv').textContent=y+(y===1?' year':' years');
+  document.getElementById('mv').textContent=m+' months';
+  // interest accrues during moratorium, then EMI over the remaining term
+  var mr=r/100/12, principal=p*(1+mr*m), n=y*12;
+  var emi = mr>0 ? principal*mr/(1-Math.pow(1+mr,-n)) : principal/n;
+  var total=emi*n, interest=total-p;
+  document.getElementById('emi').textContent=fmt(emi);
+  document.getElementById('ti').textContent=fmt(interest);
+  document.getElementById('tr').textContent=fmt(total);
+}
+calc();
+</script>
+</body>
+</html>
