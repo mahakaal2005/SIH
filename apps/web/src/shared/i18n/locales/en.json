@@ -380,5 +380,50 @@
         "hasDisability": "Choose yes or no."
       }
     }
+  },
+  "recommender": {
+    "money": {
+      "own": "You pay",
+      "grant": "Grant (free)",
+      "subsidy": "Subsidy (free after lock-in)",
+      "loan": "You borrow",
+      "summary": "Total project cost {{total}}"
+    },
+    "schemes": {
+      "title": "Your schemes",
+      "lead": "Best matches first, based on your details.",
+      "kind": {
+        "grant_plus_loan": "Grant + loan",
+        "loan": "Loan",
+        "subsidy_plus_loan": "Subsidy + loan"
+      },
+      "topMatch": "Best match",
+      "whyItFits": "Why it fits",
+      "priority": "Priority",
+      "seeDetails": "See full details",
+      "otherEligibleTitle": "Other schemes you're eligible for",
+      "nearMissTitle": "Almost eligible",
+      "nearMissHint": "Close, but not quite there yet.",
+      "alsoAvailableBanner": "No Scheduled Caste scheme fits your details, so here are schemes open to everyone.",
+      "alsoAvailableTitle": "Also available to you",
+      "whyNotTitle": "Why not these",
+      "emptyTitle": "No scheme fits yet",
+      "emptyBody": "Contact your district UPSCFDC office for help finding a scheme.",
+      "editProfile": "Edit your details",
+      "lowOddsWarning": "Only {{pct}} of applicants for this project are approved.",
+      "betterOdds": "These projects you also qualify for are approved more often:",
+      "continue": "Continue with this scheme"
+    },
+    "detail": {
+      "title": "Scheme details",
+      "ruleVersion": "Rules as of {{date}}, version {{version}}",
+      "rulesTitle": "Eligibility rules",
+      "financeTitle": "What you pay, get and borrow",
+      "sopTitle": "Project details",
+      "skillCourses": "Skill training included",
+      "conditions": "Conditions",
+      "continue": "Continue with this scheme",
+      "notFound": "This scheme could not be found."
+    }
   }
 }

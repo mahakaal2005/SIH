@@ -6,6 +6,8 @@ import { Screen } from '@/shared/components/Screen'
 import { AppShell } from './AppShell'
 import { LoginScreen } from '@/features/onboarding/presentation/LoginScreen'
 import { ProfileScreen } from '@/features/onboarding/presentation/ProfileScreen'
+import { SchemeDetailScreen } from '@/features/recommender/presentation/SchemeDetailScreen'
+import { SchemesScreen } from '@/features/recommender/presentation/SchemesScreen'
 import { HomeRedirect, RequireLanguage, RequireRole } from './guards'
 import { LanguageScreen } from './LanguageScreen'
 
@@ -37,6 +39,8 @@ export const appRoutes: RouteObject[] = [
       { path: routes.language, element: <LanguageScreen /> },
       { path: routes.login, element: <RequireLanguage><LoginScreen /></RequireLanguage> },
       { path: routes.profile, element: <RequireLanguage><RequireRole roles={['citizen']}><ProfileScreen /></RequireRole></RequireLanguage> },
+      { path: routes.schemes, element: <RequireLanguage><RequireRole roles={['citizen']}><SchemesScreen /></RequireRole></RequireLanguage> },
+      { path: routes.scheme(), element: <RequireLanguage><RequireRole roles={['citizen']}><SchemeDetailScreen /></RequireRole></RequireLanguage> },
       { path: '*', element: <NotFound /> },
     ],
   },
