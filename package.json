@@ -1,0 +1,17 @@
+{
+  "name": "yojna-sarthi",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w web",
+    "build": "npm run build -w web",
+    "test": "npm run test --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present && node scripts/check-boundaries.mjs",
+    "e2e": "npm run e2e -w web"
+  }
+}
