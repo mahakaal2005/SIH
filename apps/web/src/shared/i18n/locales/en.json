@@ -469,5 +469,26 @@
       "unaffordable": "This EMI looks unaffordable against your stated income. Consider a smaller project cost or a longer repayment period."
     },
     "continue": "Continue to find a partner"
+  },
+  "partners": {
+    "title": "Find a partner",
+    "notFound": "This scheme could not be found.",
+    "distance": "{{km}} km from your district",
+    "select": "Choose this partner",
+    "alternative": "Suggested alternative: {{name}}",
+    "noAlternative": "No alternative partner is currently available nearby.",
+    "health": {
+      "status": {
+        "healthy": "Healthy",
+        "caution": "Caution",
+        "blocked": "Blocked"
+      },
+      "reason": {
+        "overdue": "Has overdues to NSFDC older than one year",
+        "utilisation": "Below the minimum fund utilisation required",
+        "rrbNpa": "Net NPA has stayed above the safe limit for too many recent years",
+        "psbOverdue": "Had an overdue loan at the time of disbursement"
+      }
+    }
   }
 }

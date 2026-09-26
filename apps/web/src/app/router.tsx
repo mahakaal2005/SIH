@@ -7,6 +7,7 @@ import { AppShell } from './AppShell'
 import { LoginScreen } from '@/features/onboarding/presentation/LoginScreen'
 import { ProfileScreen } from '@/features/onboarding/presentation/ProfileScreen'
 import { CalculatorScreen } from '@/features/calculator/presentation/CalculatorScreen'
+import { PartnersScreen } from '@/features/partners/presentation/PartnersScreen'
 import { SchemeDetailScreen } from '@/features/recommender/presentation/SchemeDetailScreen'
 import { SchemesScreen } from '@/features/recommender/presentation/SchemesScreen'
 import { HomeRedirect, RequireLanguage, RequireRole } from './guards'
@@ -43,6 +44,7 @@ export const appRoutes: RouteObject[] = [
       { path: routes.schemes, element: <RequireLanguage><RequireRole roles={['citizen']}><SchemesScreen /></RequireRole></RequireLanguage> },
       { path: routes.scheme(), element: <RequireLanguage><RequireRole roles={['citizen']}><SchemeDetailScreen /></RequireRole></RequireLanguage> },
       { path: routes.cost(), element: <RequireLanguage><RequireRole roles={['citizen']}><CalculatorScreen /></RequireRole></RequireLanguage> },
+      { path: routes.partners(), element: <RequireLanguage><RequireRole roles={['citizen']}><PartnersScreen /></RequireRole></RequireLanguage> },
       { path: '*', element: <NotFound /> },
     ],
   },
