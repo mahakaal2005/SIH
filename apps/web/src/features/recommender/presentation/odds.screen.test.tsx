@@ -60,5 +60,7 @@ describe('approval odds on the scheme detail screen', () => {
     })
     await user.click(await screen.findByRole('link', { name: /Women's home industry/ }))
     expect(router.state.location.pathname).toBe('/schemes/pmajay-home_industry')
+    expect(await screen.findByText('PM-AJAY Grant-in-Aid: Women\'s home industry / self-employment (group)')).toBeInTheDocument()
+    expect(screen.queryByText('This scheme could not be found.')).not.toBeInTheDocument()
   })
 })

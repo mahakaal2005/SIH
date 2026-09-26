@@ -1,6 +1,6 @@
 # Phase 5: Approval Odds
 
-Status: 🟡 built, gate green; manual 360px/en+hi browser check outstanding.
+Status: ✅ done — built, gate green, browser-checked at 360px in English and Hindi.
 
 ## Goal
 The killer feature: UP's own GIA data shows approval rates from 7.7% (poultry) to 44.3% (women's home industry) for PM-AJAY projects — a 5.8x spread nobody tells the applicant about. P5 surfaces this honestly on top of P4's recommender screens, so the citizen sees the odds before choosing, not after waiting months. The rule engine and finance layer already decide *eligibility*; P5 only *explains* odds that the engine (`recommend()`) already computes. No new engine logic — `approvalRatePct`, `lowOdds` and `betterOdds` were built in P1 (`packages/shared/src/engine/recommend.ts`) and are already on every `Recommendation`. P4 already renders a one-line low-odds warning on `SchemeCard`; P5 replaces that with the fuller F4 treatment and adds the pieces P4 explicitly deferred (its "Out of scope" note: "Approval-odds badges, chart and disclosure").
@@ -34,7 +34,10 @@ The killer feature: UP's own GIA data shows approval rates from 7.7% (poultry) t
 - [x] Locale keys `recommender.odds.*` (en + hi)
 - [x] RTL: boutique shows 38.7%; poultry shows low-odds warning with home industry 44.3% first; NSFDC card has no badge; detail screen disclosure shows 62.9%; alternative link opens its detail
 - [x] Gate green
-- [ ] Browser check at 360 px in both languages — **not done**, Chrome extension unavailable this session
+- [x] Browser check at 360 px in both languages — found and fixed a real bug (see below)
+
+## Bug found in browser check, fixed
+Clicking a `betterOdds` alternative's link 404'd inside the app shell ("This scheme could not be found") even though the RTL test for it passed — that test only asserted the URL changed, not that the page rendered. Root cause: `recommend()` (P1) excludes any PM-AJAY scheme whose project doesn't match the profile's own `activityId` from every result bucket, by design (`recommend.ts`'s "noise" filter) — but a better-odds alternative *by definition* names a different activity, so it can never appear in the applicant's own `RecommendationResult`. Fixed in `useSchemeDetailViewModel.ts`: when the primary lookup misses and the scheme id is a PM-AJAY project different from the profile's activity, it re-runs `recommend()` (via the existing repository call, no engine changes) with a hypothetical profile whose `activityId` is swapped to that project, and looks up the scheme in that alternate result. Strengthened the RTL test to assert the destination page's content, not just the URL.
 
 ## Acceptance criteria
 - Demo persona: boutique card shows "38.7% approved"; no warning.

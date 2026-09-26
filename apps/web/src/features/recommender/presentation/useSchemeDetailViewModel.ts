@@ -52,14 +52,29 @@ export function useSchemeDetailViewModel() {
     enabled: profile.isSuccess && !!profile.data,
   })
 
+  // A "better odds" alternative names a PM-AJAY project for a different activity than the
+  // profile's own; recommend() excludes non-matching projects from every bucket (recommend.ts),
+  // so that scheme never appears in `recs`. Re-run recommend() as if the applicant had picked it.
+  const altProjectId = schemeId?.startsWith('pmajay-') ? schemeId.slice('pmajay-'.length) : undefined
+  const primaryMiss = recs.isSuccess && !!profile.data && !!catalog.data && !!schemeId
+    && !toDetailView(recs.data, schemeId, catalog.data.rules, profile.data.area, catalog.data.projects)
+  const needsAlt = primaryMiss && !!altProjectId && altProjectId !== profile.data?.activityId
+  const altRecs = useQuery({
+    queryKey: ['recommendations-alt', userId, schemeId],
+    queryFn: () => getRecommendations(recommendation, { ...profile.data!, activityId: altProjectId! }),
+    enabled: needsAlt,
+  })
+
   useEffect(() => {
     if (profile.isError) dispatch({ type: 'Failed', errorKey: errorKey(profile.error) })
     else if (recs.isError) dispatch({ type: 'Failed', errorKey: errorKey(recs.error) })
     else if (catalog.isError) dispatch({ type: 'Failed', errorKey: errorKey(catalog.error) })
-    else if (profile.data && recs.isSuccess && catalog.isSuccess && schemeId) {
+    else if (needsAlt && altRecs.isError) dispatch({ type: 'Failed', errorKey: errorKey(altRecs.error) })
+    else if (profile.data && recs.isSuccess && catalog.isSuccess && schemeId && (!needsAlt || altRecs.isSuccess)) {
+      const source = needsAlt ? altRecs.data! : recs.data
       dispatch({
         type: 'Loaded',
-        view: toDetailView(recs.data, schemeId, catalog.data.rules, profile.data.area, catalog.data.projects),
+        view: toDetailView(source, schemeId, catalog.data.rules, profile.data.area, catalog.data.projects),
         funnel: funnelDisclosure(catalog.data.funnel, catalog.data.districts),
       })
     }
@@ -67,6 +82,7 @@ export function useSchemeDetailViewModel() {
     profile.data, profile.isError, profile.error,
     recs.isSuccess, recs.isError, recs.error, recs.data,
     catalog.isSuccess, catalog.isError, catalog.error, catalog.data, schemeId,
+    needsAlt, altRecs.isSuccess, altRecs.isError, altRecs.error, altRecs.data,
   ])
 
   function retry() {
