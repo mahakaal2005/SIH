@@ -8,6 +8,7 @@ import {
   type RecommendationResult,
   type Scheme,
 } from '@ys/shared'
+import { betterOddsViews, type BetterOddsView } from './oddsView'
 
 export interface RuleLineView {
   reasonKey: string
@@ -24,6 +25,9 @@ export interface SchemeDetailView {
   ruleEffectiveFrom: string
   lines: RuleLineView[]
   financePlan: FinancePlan
+  approvalRatePct?: number
+  lowOdds: boolean
+  betterOdds: BetterOddsView[]
   project?: PmAjayProject
 }
 
@@ -60,6 +64,9 @@ export function toDetailView(
     ruleEffectiveFrom: rule?.effectiveFrom ?? '',
     lines,
     financePlan: financePlan(r.scheme, { projectCost: r.projectCost, area, trainingHours: project?.trainingHours }),
+    ...(r.approvalRatePct !== undefined && { approvalRatePct: r.approvalRatePct }),
+    lowOdds: r.lowOdds,
+    betterOdds: betterOddsViews(r.betterOdds, projects),
     ...(project && { project }),
   }
 }

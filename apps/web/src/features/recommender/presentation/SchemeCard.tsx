@@ -1,12 +1,14 @@
 import { useTranslation } from 'react-i18next'
 import { pick } from '@/shared/i18n'
-import { formatINR, formatPct } from '@/shared/lib/format'
+import { formatINR } from '@/shared/lib/format'
 import { MoneyBar } from '@/shared/components/MoneyBar'
 import { Badge } from '@/shared/ui/badge'
 import { Button } from '@/shared/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card'
 import type { SchemeCardView } from '../domain/resultView'
+import { BetterOddsList } from './BetterOddsList'
 import { moneySegments } from './moneySegments'
+import { OddsBadge } from './OddsBadge'
 
 export function SchemeCard({ view, top, onSeeDetails }: { view: SchemeCardView; top?: boolean; onSeeDetails: (schemeId: string) => void }) {
   const { t, i18n } = useTranslation()
@@ -42,9 +44,8 @@ export function SchemeCard({ view, top, onSeeDetails }: { view: SchemeCardView; 
             ))}
           </div>
         )}
-        {view.lowOdds && view.approvalRatePct !== undefined && (
-          <p className="text-sm text-blocked">{t('recommender.schemes.lowOddsWarning', { pct: formatPct(view.approvalRatePct) })}</p>
-        )}
+        <OddsBadge approvalRatePct={view.approvalRatePct} lowOdds={view.lowOdds} />
+        {view.lowOdds && <BetterOddsList items={view.betterOdds} />}
         <Button variant="outline" className="h-11 w-full" onClick={() => onSeeDetails(view.schemeId)}>
           {t('recommender.schemes.seeDetails')}
         </Button>

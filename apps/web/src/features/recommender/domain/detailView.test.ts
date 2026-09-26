@@ -21,6 +21,15 @@ const sitapurWoman: ApplicantProfile = {
 }
 
 describe('toDetailView', () => {
+  it('carries low odds and named alternatives for a poor-odds project', () => {
+    const result = recommend({ ...sitapurWoman, activityId: 'poultry', estimatedCost: 130000 }, catalog, ctx)
+    const view = toDetailView(result, 'pmajay-poultry', catalog.rules, sitapurWoman.area, catalog.projects)
+    expect(view?.approvalRatePct).toBe(7.7)
+    expect(view?.lowOdds).toBe(true)
+    expect(view?.betterOdds[0]).toMatchObject({ schemeId: 'pmajay-home_industry', approvalRatePct: 44.3 })
+  })
+
+
   it('builds a full pass/fail rule table with the rule version and date', () => {
     const result = recommend(sitapurWoman, catalog, ctx)
     const view = toDetailView(result, 'pmajay-boutique', catalog.rules, sitapurWoman.area, catalog.projects)

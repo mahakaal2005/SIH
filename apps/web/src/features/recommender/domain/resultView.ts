@@ -1,4 +1,5 @@
 import { financePlan, type FinancePlan, type Localized, type PmAjayProject, type Recommendation, type RecommendationResult, type Scheme } from '@ys/shared'
+import { betterOddsViews, type BetterOddsView } from './oddsView'
 
 const MAX_REASONS = 3
 
@@ -12,6 +13,7 @@ export interface SchemeCardView {
   priorityKeys: string[]
   approvalRatePct?: number
   lowOdds: boolean
+  betterOdds: BetterOddsView[]
   project?: PmAjayProject
 }
 
@@ -53,6 +55,7 @@ function toCard(r: Recommendation, area: 'rural' | 'urban', projects: PmAjayProj
     priorityKeys: r.evaluation.priorityKeys,
     ...(r.approvalRatePct !== undefined && { approvalRatePct: r.approvalRatePct }),
     lowOdds: r.lowOdds,
+    betterOdds: betterOddsViews(r.betterOdds, projects),
     ...(project && { project }),
   }
 }

@@ -7,7 +7,10 @@ import { ErrorBlock, LoadingBlock } from '@/shared/components/states'
 import { pick } from '@/shared/i18n'
 import { formatDate, formatINR } from '@/shared/lib/format'
 import { Button } from '@/shared/ui/button'
+import { BetterOddsList } from './BetterOddsList'
+import { FunnelDisclosure } from './FunnelDisclosure'
 import { moneySegments } from './moneySegments'
+import { OddsBadge } from './OddsBadge'
 import { useSchemeDetailViewModel } from './useSchemeDetailViewModel'
 
 export function SchemeDetailScreen() {
@@ -43,6 +46,9 @@ export function SchemeDetailScreen() {
   return (
     <Screen title={pick(view.name, i18n.language)} lead={pick(view.summary, i18n.language)} backTo={routes.schemes} wide>
       <div className="space-y-8">
+        <OddsBadge approvalRatePct={view.approvalRatePct} lowOdds={view.lowOdds} />
+        {view.lowOdds && <BetterOddsList items={view.betterOdds} />}
+
         <section>
           <h2 className="mb-2 text-lg font-bold">{t('recommender.detail.rulesTitle')}</h2>
           <p className="mb-3 text-sm text-muted-foreground">
@@ -84,6 +90,8 @@ export function SchemeDetailScreen() {
             )}
           </section>
         )}
+
+        <FunnelDisclosure funnel={state.funnel!} />
 
         <Button className="h-11 w-full" onClick={continueWithScheme}>
           {t('recommender.detail.continue')}

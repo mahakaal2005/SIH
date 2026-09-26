@@ -30,3 +30,8 @@ export function formatDate(iso: string): string {
 export function formatPct(value: number): string {
   return `${oneDp.format(value)}%`
 }
+
+/** Indian digit grouping (lakh/crore), no currency sign. */
+export function formatNumber(value: number): string {
+  return whole.format(value)
+}

@@ -1,7 +1,7 @@
 # Progress
 
-**Current phase:** P5 Approval odds (🟡 in progress, spec agreed)
-**Pick up here:** build per `phase-5-approval-odds.md` task list (oddsView → views → components → locale keys → RTL).
+**Current phase:** P5 Approval odds (🟡 built, gate green; browser check outstanding)
+**Pick up here:** do the manual 360px/English+Hindi browser check for the odds badge, alternatives list and funnel disclosure, then mark P5 done and write the P6 calculator spec.
 
 Status: ⬜ not started · 🟡 in progress · ✅ done. A phase spec must exist and be agreed before its work starts.
 
@@ -12,7 +12,7 @@ Status: ⬜ not started · 🟡 in progress · ✅ done. A phase spec must exist
 | P2 | Web core | F0.1, F0.2, F0.5, F0.6 | ✅ | `phase-2-web-core.md` |
 | P3 | Auth + onboarding | F0, F1.1, F5.5 | ✅ | `phase-3-auth-onboarding.md` |
 | P4 | Recommender | F1 | ✅ | `phase-4-recommender.md` |
-| P5 | Approval odds | F4 | 🟡 | `phase-5-approval-odds.md` |
+| P5 | Approval odds | F4 | 🟡 (browser check pending) | `phase-5-approval-odds.md` |
 | P6 | Calculator | F2 | ⬜ | not written |
 | P7 | Partner locator | F3 | ⬜ | not written |
 | P8 | Document checklist | F6 | ⬜ | not written |
@@ -26,8 +26,9 @@ Status: ⬜ not started · 🟡 in progress · ✅ done. A phase spec must exist
 - [x] P1 engine + seed (97 tests)
 - [x] P2 web core (commit d20ae6d)
 - [x] P3 auth + onboarding (commit f222ad8)
-- [x] P4 recommender (commit pending) — see log 2026-09-27-p4-recommender.md
-- [ ] P5 to P12: spec first, then build (order above)
+- [x] P4 recommender (commit 317ab56)
+- [x] P5 approval odds built, gate green; manual browser check outstanding — see log 2026-09-27-p5-approval-odds.md
+- [ ] P6 to P12: spec first, then build (order above)
 
 ## Deferred / Known issues
 - Product-data caveats (seeded values, approximate coordinates, Hindi names pending SOP verification) live in `CLAUDE.md` "Known issues"; do not duplicate here.

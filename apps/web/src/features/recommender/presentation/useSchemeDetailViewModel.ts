@@ -8,21 +8,26 @@ import { routes } from '@/core/router/routes'
 import { useSession, useSessionStore } from '@/core/session/SessionProvider'
 import { getRecommendations } from '../domain/recommendations.usecase'
 import { toDetailView, type SchemeDetailView } from '../domain/detailView'
+import { funnelDisclosure, type FunnelDisclosure } from '../domain/oddsView'
 
 export interface State {
   status: 'loading' | 'error' | 'notFound' | 'success'
   errorKey?: string
   view?: SchemeDetailView
+  funnel?: FunnelDisclosure
 }
 
-export type Event = { type: 'Loaded'; view: SchemeDetailView | undefined } | { type: 'Failed'; errorKey: string } | { type: 'Reset' }
+export type Event =
+  | { type: 'Loaded'; view: SchemeDetailView | undefined; funnel: FunnelDisclosure }
+  | { type: 'Failed'; errorKey: string }
+  | { type: 'Reset' }
 
 export const initialState: State = { status: 'loading' }
 
 export function reduce(_state: State, event: Event): State {
   switch (event.type) {
     case 'Loaded':
-      return event.view ? { status: 'success', view: event.view } : { status: 'notFound' }
+      return event.view ? { status: 'success', view: event.view, funnel: event.funnel } : { status: 'notFound' }
     case 'Failed':
       return { status: 'error', errorKey: event.errorKey }
     case 'Reset':
@@ -52,7 +57,11 @@ export function useSchemeDetailViewModel() {
     else if (recs.isError) dispatch({ type: 'Failed', errorKey: errorKey(recs.error) })
     else if (catalog.isError) dispatch({ type: 'Failed', errorKey: errorKey(catalog.error) })
     else if (profile.data && recs.isSuccess && catalog.isSuccess && schemeId) {
-      dispatch({ type: 'Loaded', view: toDetailView(recs.data, schemeId, catalog.data.rules, profile.data.area, catalog.data.projects) })
+      dispatch({
+        type: 'Loaded',
+        view: toDetailView(recs.data, schemeId, catalog.data.rules, profile.data.area, catalog.data.projects),
+        funnel: funnelDisclosure(catalog.data.funnel, catalog.data.districts),
+      })
     }
   }, [
     profile.data, profile.isError, profile.error,

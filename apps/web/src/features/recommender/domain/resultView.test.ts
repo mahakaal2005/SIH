@@ -20,6 +20,7 @@ const sitapurWoman: ApplicantProfile = {
   alreadyFinancedElsewhere: false, hasDisability: false, isExistingBusiness: false,
 }
 const run = (o: Partial<ApplicantProfile> = {}) => recommend({ ...sitapurWoman, ...o }, catalog, ctx)
+const poultry = () => run({ activityId: 'poultry', estimatedCost: 130000 })
 
 describe('toResultView', () => {
   it('puts the top match up front with its finance plan and priority chips', () => {
@@ -52,5 +53,16 @@ describe('toResultView', () => {
     const view = toResultView(run({ gender: 'male' }), 'rural', catalog.projects)
     const boutique = [...view.nearMisses, ...view.ineligible].find((x) => x.schemeId === 'pmajay-boutique')
     expect(boutique?.failedReasonKeys).toEqual(['rule.womenOnly'])
+  })
+
+  it('carries the low-odds flag and named better alternatives for a poor-odds project', () => {
+    const view = toResultView(poultry(), 'rural', catalog.projects)
+    const card = [view.topMatch, ...view.eligible].find((c) => c?.schemeId === 'pmajay-poultry')
+    expect(card?.lowOdds).toBe(true)
+    expect(card?.betterOdds.map((b) => [b.schemeId, b.approvalRatePct])).toEqual([
+      ['pmajay-home_industry', 44.3],
+      ['pmajay-kirana', 39.4],
+      ['pmajay-beauty_parlour', 38.9],
+    ])
   })
 })

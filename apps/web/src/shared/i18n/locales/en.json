@@ -382,6 +382,16 @@
     }
   },
   "recommender": {
+    "odds": {
+      "rate": "{{pct}} approved in the past",
+      "lowWarning": "Most applicants for this project are not approved.",
+      "betterTitle": "Projects you also qualify for, approved more often:",
+      "aboutTitle": "About these numbers",
+      "noDecision": "{{pct}} of {{applied}} applications across Uttar Pradesh are still waiting for a decision.",
+      "mostApplications": "{{district}} has the most applications ({{count}}).",
+      "mostApprovals": "{{district}} has the most approvals ({{count}}).",
+      "source": "Source: UP GIA dashboard."
+    },
     "money": {
       "own": "You pay",
       "grant": "Grant (free)",
@@ -410,8 +420,6 @@
       "emptyTitle": "No scheme fits yet",
       "emptyBody": "Contact your district UPSCFDC office for help finding a scheme.",
       "editProfile": "Edit your details",
-      "lowOddsWarning": "Only {{pct}} of applicants for this project are approved.",
-      "betterOdds": "These projects you also qualify for are approved more often:",
       "continue": "Continue with this scheme"
     },
     "detail": {
