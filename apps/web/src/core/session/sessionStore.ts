@@ -10,6 +10,7 @@ export interface LoanTerms {
 /** Selections carried between journey screens (the web equivalent of nav args / SavedStateHandle). */
 export interface Journey {
   schemeId?: string
+  projectCost?: number
   loanTerms?: LoanTerms
   partnerBranchId?: string
 }
@@ -55,9 +56,9 @@ export function createSessionStore(storage: Storage) {
     },
     setLanguage: (language: Language) => update({ ...state, language }),
     setUser: (user: User | null) => update({ ...state, user, journey: user ? state.journey : {} }),
-    chooseScheme(schemeId: string) {
+    chooseScheme(schemeId: string, projectCost: number) {
       if (state.journey.schemeId === schemeId) return
-      update({ ...state, journey: { schemeId } })
+      update({ ...state, journey: { schemeId, projectCost } })
     },
     setLoanTerms: (loanTerms: LoanTerms) => journey({ loanTerms }),
     choosePartner: (partnerBranchId: string) => journey({ partnerBranchId }),

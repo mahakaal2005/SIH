@@ -93,8 +93,8 @@ export function useSchemeDetailViewModel() {
   }
 
   function continueWithScheme() {
-    if (!schemeId) return
-    session.chooseScheme(schemeId)
+    if (!schemeId || !state.view) return
+    session.chooseScheme(schemeId, state.view.financePlan.projectCost)
     navigate(routes.cost(schemeId))
   }
 

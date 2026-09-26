@@ -27,27 +27,28 @@ describe('sessionStore', () => {
 
   it('clears downstream choices when a different scheme is chosen', () => {
     const s = createSessionStore(localStorage)
-    s.chooseScheme('pmajay-boutique')
+    s.chooseScheme('pmajay-boutique', 120000)
     s.setLoanTerms(terms)
     s.choosePartner('sbi-sitapur')
-    s.chooseScheme('pmajay-boutique')
+    s.chooseScheme('pmajay-boutique', 120000)
     expect(s.get().journey.partnerBranchId).toBe('sbi-sitapur')
-    s.chooseScheme('nsfdc-micro-credit')
-    expect(s.get().journey).toEqual({ schemeId: 'nsfdc-micro-credit' })
+    s.chooseScheme('nsfdc-micro-credit', 130000)
+    expect(s.get().journey).toEqual({ schemeId: 'nsfdc-micro-credit', projectCost: 130000 })
   })
 
   it('persists the journey across reloads', () => {
     const s = createSessionStore(localStorage)
     s.setUser(user)
-    s.chooseScheme('pmajay-boutique')
+    s.chooseScheme('pmajay-boutique', 120000)
     expect(createSessionStore(localStorage).get().journey.schemeId).toBe('pmajay-boutique')
+    expect(createSessionStore(localStorage).get().journey.projectCost).toBe(120000)
   })
 
   it('drops the journey but keeps the language on sign-out', () => {
     const s = createSessionStore(localStorage)
     s.setLanguage('hi')
     s.setUser(user)
-    s.chooseScheme('pmajay-boutique')
+    s.chooseScheme('pmajay-boutique', 120000)
     s.setUser(null)
     expect(s.get()).toEqual({ language: 'hi', user: null, journey: {} })
   })

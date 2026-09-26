@@ -433,5 +433,41 @@
       "continue": "Continue with this scheme",
       "notFound": "This scheme could not be found."
     }
+  },
+  "calculator": {
+    "title": "What it will cost",
+    "notFound": "This scheme could not be found.",
+    "noCost": {
+      "title": "Start from your schemes list",
+      "body": "Pick a scheme first so we know the project cost to calculate against."
+    },
+    "gia": {
+      "title": "Grant-in-Aid split",
+      "totalCost": "Total project cost",
+      "contribution": "Your own contribution",
+      "grant": "Grant (free)",
+      "training": "Skill training (funded, not billed to you)",
+      "cgtmse": "Guarantee fee per year",
+      "netLoan": "Net loan after grant"
+    },
+    "emi": {
+      "principal": "Loan amount {{amount}}",
+      "perMonth": "{{amount}} / month",
+      "totalInterest": "Total interest over the loan: {{amount}}",
+      "totalPayable": "Total you'll pay back: {{amount}}",
+      "capped": "Capped at the scheme's maximum loan amount."
+    },
+    "terms": {
+      "rate": "Interest rate",
+      "tenure": "Repayment period",
+      "moratorium": "Moratorium before repayment starts",
+      "months": "{{count}} months"
+    },
+    "affordability": {
+      "ok": "This EMI looks affordable against your stated income.",
+      "stretch": "This EMI is a stretch against your stated income — consider a longer repayment period.",
+      "unaffordable": "This EMI looks unaffordable against your stated income. Consider a smaller project cost or a longer repayment period."
+    },
+    "continue": "Continue to find a partner"
   }
 }
