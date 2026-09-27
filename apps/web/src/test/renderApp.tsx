@@ -12,11 +12,15 @@ import { SessionProvider } from '@/core/session/SessionProvider'
 import { createSessionStore } from '@/core/session/sessionStore'
 import i18n from '@/shared/i18n'
 import { TooltipProvider } from '@/shared/ui/tooltip'
+import { createMockLanguageService, type MockLanguageService } from './mockLanguageService'
 
 let n = 0
 
 /** Renders the real route table over a fresh mock backend with no latency. */
-export async function renderApp(path: string, opts: { language?: Language | null; citizen?: boolean; profile?: ApplicantProfile } = {}) {
+export async function renderApp(
+  path: string,
+  opts: { language?: Language | null; citizen?: boolean; profile?: ApplicantProfile; languageService?: MockLanguageService } = {},
+) {
   localStorage.clear()
   const db = await MockDb.open({ storageKey: `ui-test-${++n}`, now: () => new Date('2026-09-26T09:00:00Z') })
   const transport = new MockTransport({ minLatencyMs: 0, maxLatencyMs: 0 })
@@ -36,16 +40,17 @@ export async function renderApp(path: string, opts: { language?: Language | null
   }
   const router = createMemoryRouter(appRoutes, { initialEntries: [path] })
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } })
+  const languageService = opts.languageService ?? createMockLanguageService()
   const ui = render(
     <SessionProvider store={store}>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
-          <RepositoryProvider container={{ repos, dev: { transport, resetData: () => db.reset() } }}>
+          <RepositoryProvider container={{ repos, dev: { transport, resetData: () => db.reset() }, language: languageService }}>
             <RouterProvider router={router} />
           </RepositoryProvider>
         </TooltipProvider>
       </QueryClientProvider>
     </SessionProvider>,
   )
-  return { ...ui, router, repos, db, store, transport, user, queryClient }
+  return { ...ui, router, repos, db, store, transport, user, queryClient, languageService }
 }

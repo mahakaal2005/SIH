@@ -1,5 +1,6 @@
 import { createContext, useContext, type ReactNode } from 'react'
 import type { Repositories } from '../data/repositories/types'
+import type { LanguageService } from '../services/languageService'
 import type { Container, DevTools } from './container'
 
 const ContainerContext = createContext<Container | null>(null)
@@ -16,3 +17,4 @@ function useContainer(): Container {
 
 export const useRepositories = (): Repositories => useContainer().repos
 export const useDevTools = (): DevTools | null => useContainer().dev
+export const useLanguageService = (): LanguageService => useContainer().language

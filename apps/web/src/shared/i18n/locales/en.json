@@ -563,5 +563,18 @@
       "not_found": "No application matches this code."
     },
     "warning": "This service is free. No middleman is authorised to charge you to verify a letter. If in doubt, contact your district office directly, or escalate to the RBI Ombudsman after 30 days of no response."
+  },
+  "voice": {
+    "mic": {
+      "start": "Speak this answer",
+      "listening": "Listening…",
+      "unsupported": "Voice input is not supported in this browser",
+      "error": "Could not hear that. Try again or type it."
+    },
+    "readAloud": {
+      "play": "Read aloud",
+      "stop": "Stop reading",
+      "unsupported": "Read-aloud is not supported in this browser"
+    }
   }
 }

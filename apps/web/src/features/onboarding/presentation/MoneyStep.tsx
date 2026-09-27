@@ -11,7 +11,14 @@ export function MoneyStep({ form, assisted }: { form: ProfileForm; assisted: boo
   const q = useQuestion(assisted)
   return (
     <div className="space-y-6">
-      <NumberField form={form} field="annualFamilyIncome" prefix="₹" label={q('annualFamilyIncome')} hint={t('onboarding.profile.incomeHint')} />
+      <NumberField
+        form={form}
+        field="annualFamilyIncome"
+        prefix="₹"
+        voice
+        label={q('annualFamilyIncome')}
+        hint={t('onboarding.profile.incomeHint')}
+      />
       {HISTORY.map((name) => (
         <Controller
           key={name}

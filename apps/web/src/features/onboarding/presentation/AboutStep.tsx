@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Controller } from 'react-hook-form'
 import { educationLevels, type District } from '@ys/shared'
 import { ChoiceCards } from '@/shared/components/ChoiceCards'
+import { MicButton } from '@/shared/components/MicButton'
 import { YesNoField } from '@/shared/components/YesNoField'
 import { Input } from '@/shared/ui/input'
 import { Label } from '@/shared/ui/label'
@@ -20,11 +21,24 @@ export function AboutStep({ form, assisted, districts }: { form: ProfileForm; as
         <Label htmlFor="field-fullName" className="mb-2 block text-base">
           {q('fullName')}
         </Label>
-        <Input id="field-fullName" autoComplete="name" className="h-14 text-lg" aria-invalid={!!err('fullName')} {...form.register('fullName')} />
+        <div className="flex items-stretch gap-2">
+          <Input
+            id="field-fullName"
+            autoComplete="name"
+            className="h-14 flex-1 text-lg"
+            aria-invalid={!!err('fullName')}
+            {...form.register('fullName')}
+          />
+          <MicButton
+            className="h-14 w-14"
+            testId="mic-fullName"
+            onResult={(transcript) => form.setValue('fullName', transcript, { shouldValidate: true })}
+          />
+        </div>
         {err('fullName') && <p className="mt-1.5 text-sm text-blocked">{err('fullName')}</p>}
       </div>
 
-      <NumberField form={form} field="age" label={q('age')} suffix={t('onboarding.profile.years')} />
+      <NumberField form={form} field="age" label={q('age')} suffix={t('onboarding.profile.years')} voice />
 
       <Controller
         control={form.control}

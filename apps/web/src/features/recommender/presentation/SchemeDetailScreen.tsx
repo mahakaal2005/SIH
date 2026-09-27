@@ -2,10 +2,11 @@ import { Check, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { routes } from '@/core/router/routes'
 import { MoneyBar } from '@/shared/components/MoneyBar'
+import { ReadAloudButton } from '@/shared/components/ReadAloudButton'
 import { Screen } from '@/shared/components/Screen'
 import { ErrorBlock, LoadingBlock } from '@/shared/components/states'
 import { pick } from '@/shared/i18n'
-import { formatDate, formatINR } from '@/shared/lib/format'
+import { formatDate, formatINR, formatPct } from '@/shared/lib/format'
 import { Button } from '@/shared/ui/button'
 import { BetterOddsList } from './BetterOddsList'
 import { FunnelDisclosure } from './FunnelDisclosure'
@@ -42,9 +43,23 @@ export function SchemeDetailScreen() {
   const view = state.view!
   const segments = moneySegments(view.financePlan, t)
   const summary = t('recommender.money.summary', { total: formatINR(view.financePlan.projectCost) })
+  const spokenSummary = [
+    pick(view.name, i18n.language),
+    pick(view.summary, i18n.language),
+    view.lines.find((l) => l.passed) && t(`${view.lines.find((l) => l.passed)!.reasonKey}.pass`),
+    view.approvalRatePct !== undefined && t('recommender.odds.rate', { pct: formatPct(view.approvalRatePct) }),
+  ]
+    .filter(Boolean)
+    .join('. ')
 
   return (
-    <Screen title={pick(view.name, i18n.language)} lead={pick(view.summary, i18n.language)} backTo={routes.schemes} wide>
+    <Screen
+      title={pick(view.name, i18n.language)}
+      lead={pick(view.summary, i18n.language)}
+      backTo={routes.schemes}
+      wide
+      actions={<ReadAloudButton text={spokenSummary} />}
+    >
       <div className="space-y-8">
         <OddsBadge approvalRatePct={view.approvalRatePct} lowOdds={view.lowOdds} />
         {view.lowOdds && <BetterOddsList items={view.betterOdds} />}

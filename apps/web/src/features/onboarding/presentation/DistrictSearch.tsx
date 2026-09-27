@@ -3,6 +3,7 @@ import { useId, useMemo, useState, type KeyboardEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { searchDistricts, type District } from '@ys/shared'
 import { pick } from '@/shared/i18n'
+import { MicButton } from '@/shared/components/MicButton'
 import { cn } from '@/shared/lib/utils'
 import { Input } from '@/shared/ui/input'
 
@@ -51,27 +52,38 @@ export function DistrictSearch({
       <label htmlFor={id} className="mb-2 block font-medium">
         {label}
       </label>
-      <div className="relative">
-        <MapPin aria-hidden className="pointer-events-none absolute top-1/2 left-3 size-5 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          id={id}
-          role="combobox"
-          aria-expanded={open && query.length > 0}
-          aria-controls={listId}
-          aria-autocomplete="list"
-          aria-activedescendant={open && matches[active] ? `${listId}-${active}` : undefined}
-          aria-invalid={!!error}
-          autoComplete="off"
-          placeholder={t('onboarding.profile.districtPlaceholder')}
-          value={query}
-          onChange={(e) => {
-            setQuery(e.target.value)
+      <div className="flex items-stretch gap-2">
+        <div className="relative flex-1">
+          <MapPin aria-hidden className="pointer-events-none absolute top-1/2 left-3 size-5 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            id={id}
+            role="combobox"
+            aria-expanded={open && query.length > 0}
+            aria-controls={listId}
+            aria-autocomplete="list"
+            aria-activedescendant={open && matches[active] ? `${listId}-${active}` : undefined}
+            aria-invalid={!!error}
+            autoComplete="off"
+            placeholder={t('onboarding.profile.districtPlaceholder')}
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value)
+              setActive(0)
+              setOpen(true)
+            }}
+            onKeyDown={onKeyDown}
+            onBlur={() => setTimeout(() => setOpen(false), 150)}
+            className="h-14 pl-10 text-lg"
+          />
+        </div>
+        <MicButton
+          className="h-14 w-14"
+          testId="mic-districtId"
+          onResult={(transcript) => {
+            setQuery(transcript)
             setActive(0)
             setOpen(true)
           }}
-          onKeyDown={onKeyDown}
-          onBlur={() => setTimeout(() => setOpen(false), 150)}
-          className="h-14 pl-10 text-lg"
         />
       </div>
       {open && query && (

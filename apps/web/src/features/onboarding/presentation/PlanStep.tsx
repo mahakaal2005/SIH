@@ -75,6 +75,7 @@ export function PlanStep({
         form={form}
         field="estimatedCost"
         prefix="₹"
+        voice
         label={purpose === 'education' ? q('courseFee') : q('estimatedCost')}
         hint={
           purpose === 'education' ? undefined : sop ? (

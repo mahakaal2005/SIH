@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import { pick } from '@/shared/i18n'
-import { formatINR } from '@/shared/lib/format'
+import { formatINR, formatPct } from '@/shared/lib/format'
 import { MoneyBar } from '@/shared/components/MoneyBar'
+import { ReadAloudButton } from '@/shared/components/ReadAloudButton'
 import { Badge } from '@/shared/ui/badge'
 import { Button } from '@/shared/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card'
@@ -14,13 +15,25 @@ export function SchemeCard({ view, top, onSeeDetails }: { view: SchemeCardView; 
   const { t, i18n } = useTranslation()
   const segments = moneySegments(view.financePlan, t)
   const summary = t('recommender.money.summary', { total: formatINR(view.financePlan.projectCost) })
+  const spokenSummary = [
+    pick(view.name, i18n.language),
+    view.reasonKeys[0] && t(`${view.reasonKeys[0]}.pass`),
+    view.approvalRatePct !== undefined && t('recommender.odds.rate', { pct: formatPct(view.approvalRatePct) }),
+  ]
+    .filter(Boolean)
+    .join('. ')
 
   return (
     <Card className={top ? 'ring-2 ring-primary' : undefined}>
       <CardHeader>
-        {top && <Badge variant="secondary">{t('recommender.schemes.topMatch')}</Badge>}
-        <CardTitle>{pick(view.name, i18n.language)}</CardTitle>
-        <p className="text-muted-foreground">{pick(view.agency, i18n.language)}</p>
+        <div className="flex items-start justify-between gap-2">
+          <div>
+            {top && <Badge variant="secondary">{t('recommender.schemes.topMatch')}</Badge>}
+            <CardTitle>{pick(view.name, i18n.language)}</CardTitle>
+            <p className="text-muted-foreground">{pick(view.agency, i18n.language)}</p>
+          </div>
+          <ReadAloudButton text={spokenSummary} />
+        </div>
         <Badge variant="outline">{t(`recommender.schemes.kind.${view.kind}`)}</Badge>
       </CardHeader>
       <CardContent className="space-y-3">
