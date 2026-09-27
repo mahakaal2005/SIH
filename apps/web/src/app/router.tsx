@@ -7,6 +7,7 @@ import { AppShell } from './AppShell'
 import { LoginScreen } from '@/features/onboarding/presentation/LoginScreen'
 import { ProfileScreen } from '@/features/onboarding/presentation/ProfileScreen'
 import { CalculatorScreen } from '@/features/calculator/presentation/CalculatorScreen'
+import { DocumentsScreen } from '@/features/documents/presentation/DocumentsScreen'
 import { PartnersScreen } from '@/features/partners/presentation/PartnersScreen'
 import { SchemeDetailScreen } from '@/features/recommender/presentation/SchemeDetailScreen'
 import { SchemesScreen } from '@/features/recommender/presentation/SchemesScreen'
@@ -45,6 +46,7 @@ export const appRoutes: RouteObject[] = [
       { path: routes.scheme(), element: <RequireLanguage><RequireRole roles={['citizen']}><SchemeDetailScreen /></RequireRole></RequireLanguage> },
       { path: routes.cost(), element: <RequireLanguage><RequireRole roles={['citizen']}><CalculatorScreen /></RequireRole></RequireLanguage> },
       { path: routes.partners(), element: <RequireLanguage><RequireRole roles={['citizen']}><PartnersScreen /></RequireRole></RequireLanguage> },
+      { path: routes.documents(), element: <RequireLanguage><RequireRole roles={['citizen']}><DocumentsScreen /></RequireRole></RequireLanguage> },
       { path: '*', element: <NotFound /> },
     ],
   },

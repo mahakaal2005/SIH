@@ -490,5 +490,31 @@
         "psbOverdue": "Had an overdue loan at the time of disbursement"
       }
     }
+  },
+  "documents": {
+    "title": "Documents",
+    "notFound": "This scheme could not be found.",
+    "preflight": {
+      "title": "Pre-scrutiny check",
+      "notBlocking": "This does not stop you from submitting; the committee reviews it during pre-scrutiny."
+    },
+    "report": {
+      "title": "Project report",
+      "totalCost": "Total project cost",
+      "beneficiaryContribution": "Your contribution (5%)",
+      "grant": "PM-AJAY grant",
+      "trainingCost": "Training amount",
+      "cgtmseFeeAnnual": "CGTMSE guarantee fee"
+    },
+    "digiLocker": {
+      "fetch": "Fetch via DigiLocker",
+      "fetching": "Fetching…",
+      "verified": "Verified"
+    },
+    "submit": {
+      "needAll": "Tick every document once you have it ready.",
+      "cta": "Submit application",
+      "busy": "Submitting…"
+    }
   }
 }
