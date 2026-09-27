@@ -20,6 +20,7 @@ build/
 out/
 .next/
 .vite/
+dev-dist/
 *.tsbuildinfo
 
 # ── test & coverage ────────────────────────────────────
@@ -58,3 +59,11 @@ tmp/
 .supabase/
 .vercel
 .wrangler/
+# ── claude code: share settings + hooks, keep personal/local state out ──
+.claude/*
+!.claude/settings.json
+!.claude/hooks/
+.claude/settings.local.json
+.claude/.needs-verify-*
+.claude/.needs-log-*
+!.claude/rules/

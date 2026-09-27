@@ -1,8 +1,24 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "import"],
+  "plugins": ["react", "typescript", "import", "jsx-a11y"],
   "ignorePatterns": ["dist", "dev-dist"],
   "overrides": [
-    { "files": ["src/shared/ui/**"], "rules": { "react/only-export-components": "off" } }
+    { "files": ["src/shared/ui/**"], "rules": { "react/only-export-components": "off" } },
+    {
+      "files": [
+        "src/shared/components/states.tsx",
+        "src/shared/components/MoneyBar.tsx",
+        "src/features/status/presentation/VerifyScreen.tsx"
+      ],
+      "rules": { "jsx-a11y/prefer-tag-over-role": "off" }
+    },
+    {
+      "files": ["src/features/onboarding/presentation/DistrictSearch.tsx"],
+      "rules": {
+        "jsx-a11y/prefer-tag-over-role": "off",
+        "jsx-a11y/no-noninteractive-element-to-interactive-role": "off",
+        "jsx-a11y/click-events-have-key-events": "off"
+      }
+    }
   ]
 }

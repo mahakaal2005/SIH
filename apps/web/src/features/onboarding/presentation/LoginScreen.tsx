@@ -35,7 +35,6 @@ export function LoginScreen() {
             <Input
               id="otp"
               key="otp"
-              autoFocus
               inputMode="numeric"
               autoComplete="one-time-code"
               maxLength={6}
@@ -59,7 +58,6 @@ export function LoginScreen() {
               <Input
                 id="phone"
                 key="phone"
-                autoFocus
                 type="tel"
                 inputMode="numeric"
                 autoComplete="tel-national"

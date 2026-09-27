@@ -1,7 +1,7 @@
 # Progress
 
-**Current phase:** P12 PWA + a11y polish (⬜ spec not written)
-**Pick up here:** write `phase-12-pwa-a11y.md` and get it agreed before any P12 code. This is the last phase in the table — check with the user whether further phases are wanted afterward.
+**Current phase:** P12 PWA + a11y polish (✅ done)
+**Pick up here:** P12 is the last phase in the table and is now shipped — check with the user whether further phases are wanted, or whether the project is feature-complete for the hackathon submission.
 
 Status: ⬜ not started · 🟡 in progress · ✅ done. A phase spec must exist and be agreed before its work starts.
 
@@ -19,7 +19,7 @@ Status: ⬜ not started · 🟡 in progress · ✅ done. A phase spec must exist
 | P9 | Status tracker | F8 | ✅ | `phase-9-status-tracker.md` |
 | P10 | Voice | F5 | ✅ | `phase-10-voice.md` |
 | P11 | Officer dashboard + rules admin | F7 | ✅ | `phase-11-officer-rules-admin.md` |
-| P12 | PWA + a11y polish | - | ⬜ | not written |
+| P12 | PWA + a11y polish | - | ✅ | `phase-12-pwa-a11y.md` |
 
 ## Checklist
 - [x] P0 workspaces, Vite app, Tailwind + shadcn, oxlint, Vitest/Playwright config
@@ -34,12 +34,14 @@ Status: ⬜ not started · 🟡 in progress · ✅ done. A phase spec must exist
 - [x] P9 status tracker (commit pending this turn) — gate green (15 script + 111 shared + 276 web tests); browser check not run (Claude-in-Chrome extension not connected this session), see log 2026-09-27-p9-status-tracker.md
 - [x] P10 voice (commit pending this turn) — gate green (15 script + 111 shared + 290 web tests); browser check not run (Claude-in-Chrome extension still disconnected), see log 2026-09-27-p10-voice.md
 - [x] P11 officer dashboard + rules admin (commit pending this turn) — gate green (15 script + 111 shared + 305 web tests); browser check not run (Claude-in-Chrome extension still disconnected), see log 2026-09-27-p11-officer-rules-admin.md
-- [ ] P12: spec first, then build (order above)
+- [x] P12 PWA + a11y polish (commit pending this turn) — gate green (15 script + 111 shared + 305 web tests); browser check not run (Claude-in-Chrome extension disconnected 4th session running — substituted `npm run build` verification + static code audit), see log 2026-09-27-p12-pwa-a11y.md
 
 ## Deferred / Known issues
 - Product-data caveats (seeded values, approximate coordinates, Hindi names pending SOP verification) live in `CLAUDE.md` "Known issues"; do not duplicate here.
 - Infra not yet done: GitHub Actions CI, Supabase keepalive, gitleaks pre-commit, Supabase/Playwright MCP.
 - Open doc items in `docs/00-INDEX.md` (Supabase project, Bhashini/Groq keys, GCP budget alerts).
+- Claude-in-Chrome extension has been disconnected for 4 consecutive sessions (P9–P12); every phase's browser-check step has been substituted with RTL/static-audit/build verification instead. Worth investigating the extension/Chrome pairing directly rather than continuing to retry per-session.
+- P12 offline-installability, offline-shell-reload, and live keyboard/screen-reader behavior were never verified in an actual browser (only `npm run build` output + static code audit) — do a manual pass once Claude-in-Chrome reconnects.
 
 ## Mismatch rule
 If this file and the code disagree, flag it to the user before proceeding; do not trust either silently.

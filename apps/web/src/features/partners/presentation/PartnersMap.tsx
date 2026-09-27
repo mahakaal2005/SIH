@@ -4,7 +4,7 @@ import { CircleMarker, MapContainer, Popup, TileLayer } from 'react-leaflet'
 import { pick } from '@/shared/i18n'
 import type { PartnerListItem } from '../domain/partnersView'
 
-const STATUS_COLOR = { healthy: '#1b7f4b', caution: '#a86a00', blocked: '#b42318' } as const
+const STATUS_COLOR = { healthy: '#1b7d4a', caution: '#9b6200', blocked: '#b42318' } as const
 
 export function PartnersMap({
   items,
