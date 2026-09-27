@@ -47,5 +47,5 @@ export async function renderApp(path: string, opts: { language?: Language | null
       </QueryClientProvider>
     </SessionProvider>,
   )
-  return { ...ui, router, repos, db, store, transport, user }
+  return { ...ui, router, repos, db, store, transport, user, queryClient }
 }

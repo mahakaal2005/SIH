@@ -11,6 +11,9 @@ import { DocumentsScreen } from '@/features/documents/presentation/DocumentsScre
 import { PartnersScreen } from '@/features/partners/presentation/PartnersScreen'
 import { SchemeDetailScreen } from '@/features/recommender/presentation/SchemeDetailScreen'
 import { SchemesScreen } from '@/features/recommender/presentation/SchemesScreen'
+import { ApplicationDetailScreen } from '@/features/status/presentation/ApplicationDetailScreen'
+import { StatusListScreen } from '@/features/status/presentation/StatusListScreen'
+import { VerifyScreen } from '@/features/status/presentation/VerifyScreen'
 import { HomeRedirect, RequireLanguage, RequireRole } from './guards'
 import { LanguageScreen } from './LanguageScreen'
 
@@ -47,6 +50,9 @@ export const appRoutes: RouteObject[] = [
       { path: routes.cost(), element: <RequireLanguage><RequireRole roles={['citizen']}><CalculatorScreen /></RequireRole></RequireLanguage> },
       { path: routes.partners(), element: <RequireLanguage><RequireRole roles={['citizen']}><PartnersScreen /></RequireRole></RequireLanguage> },
       { path: routes.documents(), element: <RequireLanguage><RequireRole roles={['citizen']}><DocumentsScreen /></RequireRole></RequireLanguage> },
+      { path: routes.status, element: <RequireLanguage><RequireRole roles={['citizen']}><StatusListScreen /></RequireRole></RequireLanguage> },
+      { path: routes.application(), element: <RequireLanguage><RequireRole roles={['citizen']}><ApplicationDetailScreen /></RequireRole></RequireLanguage> },
+      { path: routes.verify, element: <VerifyScreen /> },
       { path: '*', element: <NotFound /> },
     ],
   },

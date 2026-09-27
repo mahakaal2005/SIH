@@ -11,6 +11,8 @@ export const queryKeys = {
   partners: (query: PartnerQuery) => ['partners', query.schemeId, query.near.lat, query.near.lng] as const,
   checklist: (userId: string, schemeId: string) => ['checklist', userId, schemeId] as const,
   preflight: (userId: string) => ['preflight', userId] as const,
+  application: (id: string) => ['application', id] as const,
+  notifications: (userId: string) => ['notifications', userId] as const,
 }
 
 /** Schemes, rules, districts, projects: read-mostly reference data shared by every feature. */
@@ -39,4 +41,22 @@ export function usePreflight(userId: string, profile: ApplicantProfile | null | 
     queryFn: () => document.runPreflight(userId, profile!),
     enabled: !!profile,
   })
+}
+
+/** All of this citizen's applications, newest first. */
+export function useApplications(userId: string) {
+  const { application } = useRepositories()
+  return useQuery({ queryKey: queryKeys.applications(userId), queryFn: () => application.listMine(userId) })
+}
+
+/** A single application by id, for the status detail screen. */
+export function useApplication(id: string) {
+  const { application } = useRepositories()
+  return useQuery({ queryKey: queryKeys.application(id), queryFn: () => application.get(id) })
+}
+
+/** In-app preview of the SMS/WhatsApp nudges this citizen would receive. */
+export function useNotifications(userId: string) {
+  const { notification } = useRepositories()
+  return useQuery({ queryKey: queryKeys.notifications(userId), queryFn: () => notification.list(userId) })
 }

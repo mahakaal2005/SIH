@@ -516,5 +516,52 @@
       "cta": "Submit application",
       "busy": "Submitting…"
     }
+  },
+  "status": {
+    "list": {
+      "title": "My applications",
+      "submittedOn": "Submitted {{date}}",
+      "empty": {
+        "title": "No applications yet",
+        "body": "Once you submit an application, you can track its progress here.",
+        "cta": "Browse schemes"
+      }
+    },
+    "detail": {
+      "title": "Application {{receiptNo}}",
+      "timeline": {
+        "title": "Progress",
+        "expected": "Expected by {{date}}",
+        "reachedOn": "Reached {{date}}"
+      },
+      "banner": {
+        "rejected": { "title": "This application was not approved", "cta": "Start a new application" },
+        "returned": { "title": "Sent back for correction", "cta": "Resubmit", "busy": "Resubmitting…" },
+        "success": "Congratulations — this application is through."
+      },
+      "notifications": {
+        "title": "Updates",
+        "empty": "No updates yet."
+      },
+      "receipt": {
+        "show": "Show my receipt code",
+        "hide": "Hide receipt code",
+        "warning": "This app is free. No middleman is authorised to charge you for this application. If anyone asks you for money, refuse and report it."
+      }
+    }
+  },
+  "verify": {
+    "title": "Check a letter",
+    "lead": "Paste the code printed on a Yojna Sarthi receipt or sanction letter to confirm it is genuine.",
+    "placeholder": "Paste the receipt code here",
+    "cta": "Check",
+    "checking": "Checking…",
+    "result": {
+      "valid": { "title": "This is a genuine application", "stage": "Current status: {{stage}}" },
+      "malformed": "That does not look like a Yojna Sarthi code. Check you copied the whole thing.",
+      "bad_signature": "This code's signature does not match. It may have been altered — do not trust this letter.",
+      "not_found": "No application matches this code."
+    },
+    "warning": "This service is free. No middleman is authorised to charge you to verify a letter. If in doubt, contact your district office directly, or escalate to the RBI Ombudsman after 30 days of no response."
   }
 }
