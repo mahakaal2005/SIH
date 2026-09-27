@@ -4,11 +4,40 @@ The decision-and-execution layer between SC entrepreneurs in Uttar Pradesh and N
 
 Product spec lives in `docs/` (start with `docs/00-INDEX.md`; features in `docs/05-features.md`, stack in `docs/06-tech-stack.md`). Approved design: `docs/superpowers/specs/2026-09-26-yojna-sarthi-frontend-design.md`.
 
-## Before any development
+## Where things live
 
-1. **List the available skills and invoke every relevant one before writing code.** Typical: `superpowers:brainstorming` (new behaviour), `superpowers:test-driven-development` (all logic), `superpowers:systematic-debugging` (bugs), `react`, `typescript`, `tailwindcss`, `tanstack-query`, `vite`, `zod-schema-validation`, `frontend-design` / `impeccable` (UI), `a11y-audit` (screens), `superpowers:verification-before-completion` (before claiming done).
-2. Read this file, then `docs/BUILD-LOG.md` (latest entries), then the feature's `spec.md`.
-3. Check library docs with context7 before using an API. Versions here are newer than most training data (React Router 8, Vitest 5, Zod 4, i18next 26, Tailwind 4, Vite 8, TS 6).
+| What | Where |
+|---|---|
+| Resume point, phase table, deferred issues (read first, every session) | `specs/office/progress.md` |
+| Architecture (source of truth; never deviate without approval) | `specs/architecture.md` |
+| Phase specs (written and agreed before work starts) | `specs/office/phase-N-<name>.md` |
+| Session dev journal | `specs/logs/YYYY-MM-DD-<topic>.md` |
+| Product requirements | `docs/PRD.md` |
+| Product evidence and features (one fact, one doc) | `docs/00-INDEX.md` to `docs/06-tech-stack.md` |
+| Per-module summaries (frozen after 2026-09-26; new work goes in `specs/logs/`) | `docs/BUILD-LOG.md` |
+| Mentor Q&A notes | `learning/` (style: `.claude/rules/senior-mentor.md`) |
+
+Team safeguards (committed, so every clone gets them): `npm run lint` fails if `progress.md` is malformed or a started phase has no spec (`scripts/check-specs.mjs`); Claude asks before editing `specs/architecture.md`, `.claude/settings.json` or `.claude/hooks/`; `.github/CODEOWNERS` routes those paths to the owner for review (turn on "Require review from Code Owners" in GitHub branch protection). Hooks need `jq` installed; a SessionStart warning appears if it is missing. Personal overrides go in `.claude/settings.local.json` (gitignored).
+
+A SessionStart hook injects the "Pick up here" line and the latest log's next steps into every session, including after `/clear` and compaction.
+
+## Rules
+
+0. Start every session by reading `specs/office/progress.md`.
+1. Read `specs/architecture.md` before writing code. Never deviate without listing the changes and getting explicit approval.
+2. Don't start a feature until its phase spec exists and the user has agreed to it.
+3. At the end of a session or task: write a log in `specs/logs/`, tick items in `progress.md`, mark finished phases in their phase file.
+4. If `progress.md` and the code disagree, flag the mismatch; don't silently trust either.
+5. Stay within the current phase. Note unrelated bugs under "Deferred" in `progress.md`; don't fix them inline.
+6. Read only files relevant to the task; don't re-read unchanged files; ask for a path instead of grepping blindly.
+7. Match existing naming and patterns exactly.
+8. Flag new dependencies and get approval before adding them.
+9. Never invent APIs; check docs with context7 (versions here are newer than most training data: React Router 8, Vitest 5, Zod 4, i18next 26, Tailwind 4, Vite 8, TS 6).
+10. After any code change run typecheck, lint and the relevant tests before calling it done.
+11. Keep files under 300 lines (generated `shared/ui/*` exempt); propose a split instead of growing one.
+12. Comments: short, inline, one sentence max. No decorative separators or paragraph headers.
+13. Mentor Q&A: write the `learning/` note in the same turn.
+14. Invoke relevant skills before coding: `superpowers:brainstorming` (new behaviour), `superpowers:test-driven-development` (logic), `superpowers:systematic-debugging` (bugs), `react`, `typescript`, `tailwindcss`, `tanstack-query`, `vite`, `zod-schema-validation`, `frontend-design` / `impeccable` (UI), `a11y-audit` (screens), `superpowers:verification-before-completion`.
 
 ## Stack
 
@@ -60,27 +89,15 @@ scripts/                    check-boundaries.mjs, check-i18n.mjs (+ node tests)
 
 `npm run dev` · `npm test` · `npm run typecheck` · `npm run lint` (oxlint + boundaries + i18n) · `npm run e2e`
 
+Claude Code hooks (`.claude/hooks/`, wired in `.claude/settings.json`): oxlint `--deny-warnings` on every edited TS file; on Stop, if TS/JSON changed, typecheck + lint + script tests + `vitest related` must pass; edits to `.env*`/credential files, reading `.env`, and force-push are blocked; remote `supabase db push` and `git reset --hard` ask first.
+
 ## Mock backend contract
 
 Repositories return Promises and run through `mockTransport` (200–500 ms latency, per-repository error injection from the dev panel). `MockDb` holds all tables in IndexedDB (versioned key, "Reset demo data" in the dev panel), seeded from `@ys/shared/seed` plus ~150 generated applications. Officer actions write to the same DB the citizen reads, so the status tracker reflects them. Login is mock phone OTP; roles: `citizen`, `district_officer`, `hq_admin`. Real backend later = new `core/data/http/*` implementations; nothing else changes.
 
 ## Feature status
 
-| Module | Req IDs | Status |
-|---|---|---|
-| Scaffold + tooling | — | Done |
-| Shared engine + seed | F1.2–F1.7, F2.1–F2.6, F3.2, F3.6, F4.1, F8.2 | Done (97 tests) |
-| Web core (i18n, router, DI, session, mock backend, dev panel) | F0.1, F0.2, F0.5, F0.6 | Not started |
-| Auth + onboarding | F0, F1.1, F5.5 | Not started |
-| Recommender | F1 | Not started |
-| Approval odds | F4 | Not started |
-| Calculator | F2 | Not started |
-| Partner locator | F3 | Not started |
-| Document checklist | F6 | Not started |
-| Status tracker | F8 | Not started |
-| Voice | F5 | Not started |
-| Officer dashboard + rules admin | F7 | Not started |
-| PWA + a11y polish | — | Not started |
+See `specs/office/progress.md` (single source).
 
 ## Known issues / seeded data
 

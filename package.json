@@ -9,9 +9,10 @@
   "scripts": {
     "dev": "npm run dev -w web",
     "build": "npm run build -w web",
-    "test": "npm run test --workspaces --if-present",
+    "test": "node --test scripts/*.test.mjs && npm run test --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
-    "lint": "npm run lint --workspaces --if-present && node scripts/check-boundaries.mjs",
-    "e2e": "npm run e2e -w web"
+    "lint": "npm run lint --workspaces --if-present && node scripts/check-boundaries.mjs && node scripts/check-i18n.mjs && node scripts/check-specs.mjs",
+    "e2e": "npm run e2e -w web",
+    "check:rules": "node scripts/check-boundaries.mjs && node scripts/check-i18n.mjs && node scripts/check-specs.mjs"
   }
 }

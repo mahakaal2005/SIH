@@ -1,6 +1,6 @@
 # Build log
 
-Append-only. Newest at the bottom. Never rewrite an old entry.
+Append-only. Newest at the bottom. Never rewrite an old entry. **Frozen after 2026-09-26: new session detail goes in `specs/logs/`.**
 
 ---
 

@@ -98,15 +98,73 @@ Free tier: 500MB database, 1GB storage, 50k monthly active auth users. Our entir
 
 **Why the database choice hinges entirely on F3:** *find partners within X km, authorised for scheme Y, with NPA < 15% AND utilisation > 80% AND no overdues > 1 year, ranked by travel time.* Document databases handle multi-range + geo + aggregate badly. And the PS explicitly asks for routing on **current** fund utilisation — precomputing that into buckets would quietly gut our best feature.
 
-### Maps & geo
+### Maps & geo — **two keys, not one**
 
 | Option | Verdict | Why |
 |---|---|---|
-| **Google Maps + Places + Directions** | ✅ **CHOSEN** | **Places Autocomplete on Indian village names is the deciding factor.** Directions gives real travel time, not straight-line distance |
-| `@vis.gl/react-google-maps` | ✅ | Official React wrapper |
-| Leaflet + OSM | 🟡 **Fallback flag** | Free, but weaker India village coverage. Lives behind `USE_GOOGLE_MAPS=false` so credit exhaustion never breaks the demo |
+| **Google Maps Platform** | ✅ **CHOSEN** | **Places Autocomplete on Indian village names is the deciding factor.** Directions gives real travel time, not straight-line distance |
+| `@vis.gl/react-google-maps` | ✅ | Official React wrapper for the render layer |
+| Leaflet + OSM + OSRM | 🟡 **Fallback flag** | Fully free, zero keys, but weaker India village coverage. Behind `USE_GOOGLE_MAPS=false` so credit exhaustion never breaks the demo |
 
-⚠️ **Restrict the Maps key by HTTP referrer before the first deploy.** It ships in the frontend bundle. An unrestricted key gets scraped and drains ₹32,000 overnight.
+**The Maps APIs are not one thing. They split by where they can physically run:**
+
+| API | Runs where | Key |
+|---|---|---|
+| **Directions** | Server-side REST | 🔒 **Server key, backend only** |
+| **Geocoding** | Server-side REST | 🔒 **Server key, backend only** |
+| **Places (Web Service)** | Server-side REST | 🔒 **Server key, backend only** |
+| **Maps JavaScript API** | **Browser only, unavoidably** | ⚠️ Public by necessity |
+
+The Maps JS API loads Google's script into the page and the browser talks directly to Google's tile servers. It cannot be proxied — tile proxying violates the ToS and would wreck performance.
+
+**So we run two keys:**
+
+**1. Server key** (`GOOGLE_MAPS_SERVER_KEY`)
+- Directions, Geocoding, Places Web Service
+- Lives in `.env` on Cloud Run. **Never reaches the browser**
+- IP-restricted to Cloud Run egress if a static IP is configured
+- This is where all the expensive calls happen
+
+**2. Browser key** (`VITE_GOOGLE_MAPS_BROWSER_KEY`)
+- **Maps JavaScript API only**
+- Public by necessity, so locked down three ways:
+  1. **HTTP referrer restriction** to exact domains (+ localhost for dev)
+  2. **API restriction to Maps JavaScript API alone** — a stolen key cannot call Directions or Places
+  3. **Daily quota cap** set on that specific key in GCP
+
+**Worst case if the browser key is scraped: someone renders maps.** They cannot run our expensive geo queries. Damage is bounded and capped.
+
+### 🆕 Directions cache — the real cost control
+
+Once Directions runs through our backend, results are cacheable. **Travel time from a given village to a given partner branch does not change.**
+
+```
+directions_cache
+  origin_place_id   text
+  dest_place_id     text
+  distance_m        int
+  duration_s        int
+  fetched_at        timestamptz
+  PRIMARY KEY (origin_place_id, dest_place_id)
+```
+
+Our five demo districts have a fixed set of partner branches. **After the first run, nearly every routing query is a cache hit costing nothing.** Geocoding results cache the same way.
+
+The frontend never sees a raw Google response. It receives *"nearest 5 eligible partners with travel times"* — our API, our shape, our rate limits.
+
+⚠️ **ToS constraint, worth knowing before someone suggests it:** Google's Maps Platform terms restrict using Google Maps content with a non-Google map. **Directions data rendered on a Leaflet/OSM basemap is a violation.** So the fallback is all-or-nothing: either Google maps + Google APIs, or OSM + OSRM routing. Never mixed.
+
+### 🔐 Key-exposure principle (applies beyond maps)
+
+> **No API key reaches the browser unless the API technically requires it there.**
+
+| Key | Where | Why |
+|---|---|---|
+| Google Maps **server** key | 🔒 Backend | Can be server-side, so it is |
+| Google Maps **browser** key | ⚠️ Browser | Technically unavoidable. Scoped and capped |
+| Bhashini | 🔒 Backend | Every call goes through `LanguageService` |
+| Gemini / Groq | 🔒 Backend | Never client-side |
+| **Supabase anon key** | ✅ Browser, **by design** | This one is *meant* to be public. **RLS is what protects the data.** Do not "fix" this — just make sure RLS is on |
 
 ### Language & voice (F0 + F5)
 
@@ -270,26 +328,33 @@ FCM for push (the only Firebase piece remaining)
 
 ## Cost against ₹32,000
 
-| Service | / month | 3 months |
-|---|---|---|
-| Supabase | ₹0 free tier (₹2,100 for the demo month if we upgrade) | ₹2,100 |
-| Cloud Run (scales to zero) | ₹300 | ₹900 |
-| Google Maps | ₹1,500 | ₹4,500 |
-| Gemini (Vertex) | ₹1,000 | ₹3,000 |
-| Groq / Ollama fallbacks | ₹0 | ₹0 |
-| Cloudflare Pages, FCM | ₹0 | ₹0 |
-| **Total** | **~₹2,800** | **~₹10,500** |
+**Correction, 26 Sept:** the first version of this table priced each service as if it ran at steady monthly load for three months. That's the wrong model for a hackathon build. Nobody is a paying customer here — it's six of us testing for a few weeks, then judges clicking through a demo once. Below is what that actually consumes, service by service, against what's free regardless of usage.
 
-**A third of the credits.** Much lower burn than v1, because Supabase replaced an always-on Cloud SQL instance.
+| Service | Free no matter what | What our actual usage costs |
+|---|---|---|
+| Supabase | Free tier: 500MB DB, 50k monthly active users | ₹0 — we will never get near this ceiling |
+| Cloud Run | 2 million requests/month free, scales to zero between them | ₹0 — a few thousand requests total across dev + demo |
+| Google Maps Platform | **$200/month credit, automatic on every billing-enabled account** (~₹16,600) | ₹0 — with the directions cache, maybe a few hundred live Directions/Geocoding calls total before the cache absorbs the rest. Nowhere close to $200 |
+| Gemini (Vertex, Flash) | — | ~₹30–100 total. Flash is fractions of a rupee per call; even 2,000 dev+demo calls at ~2k tokens each is a few million tokens, which prices in cents |
+| Groq / Ollama fallbacks | Free / local | ₹0 |
+| Cloudflare Pages, FCM | Free tier | ₹0 |
+| **Realistic total, whole project through demo day** | | **under ₹200** |
+
+**So why keep the ₹8k/16k/24k budget alerts at all, if the real cost is near-zero?** Because the alerts aren't sized to expected usage — they're a tripwire for *mis*use: an unrestricted key scraped and hammered overnight, a caching bug that replays the same call in a loop, someone leaving a Cloud SQL instance on instead of Supabase. The ₹32k credit is a safety margin against a mistake, not a budget we're expected to spend. If we're anywhere near ₹8k before demo day, something is broken, not merely busy.
+
+*Google Maps Platform pricing changed in 2025 — worth a 2-minute check of current per-call rates before the first live demo, but the $200 monthly credit itself has been stable and applies automatically once billing is enabled.*
 
 ---
 
 ## Guardrails — before any code ships
 
 1. **GCP budget alerts at ₹8,000 / ₹16,000 / ₹24,000**
-2. **Maps API key restricted by HTTP referrer** (localhost + deployed domain only)
-3. **Separate dev and prod keys**
-4. **`USE_GOOGLE_MAPS` flag** with Leaflet behind it
+2. **Two Maps keys, split by surface:**
+   - Server key (Directions/Geocoding/Places) — backend `.env` only, never shipped
+   - Browser key (Maps JS only) — referrer-restricted **+ API-restricted to Maps JS alone + daily quota cap**
+3. **Separate dev and prod keys** for both
+4. **Directions and geocoding cached in Postgres** before the first demo — this is the actual cost control
+5. **`USE_GOOGLE_MAPS` flag** with Leaflet + OSRM behind it (all-or-nothing, never mixed with Google data)
 5. **Every LLM call behind a timeout + circuit breaker** — degrade to rule-only output rather than hanging in front of judges
 6. **`.gitignore` before the first commit.** Nothing in `.env` ever committed
 7. **Supabase RLS on from day one**, not bolted on later

@@ -1,0 +1,6 @@
+# Changes here need review from the owner. Enable "Require review from Code Owners" in branch protection.
+/specs/architecture.md   @mahakaal2005
+/CLAUDE.md               @mahakaal2005
+/.claude/                @mahakaal2005
+/scripts/                @mahakaal2005
+/.github/                @mahakaal2005
