@@ -14,6 +14,10 @@ import { SchemesScreen } from '@/features/recommender/presentation/SchemesScreen
 import { ApplicationDetailScreen } from '@/features/status/presentation/ApplicationDetailScreen'
 import { StatusListScreen } from '@/features/status/presentation/StatusListScreen'
 import { VerifyScreen } from '@/features/status/presentation/VerifyScreen'
+import { OfficerApplicationScreen } from '@/features/officer/presentation/OfficerApplicationScreen'
+import { OfficerPartnersScreen } from '@/features/officer/presentation/OfficerPartnersScreen'
+import { OfficerQueueScreen } from '@/features/officer/presentation/OfficerQueueScreen'
+import { OfficerRulesScreen } from '@/features/officer/presentation/OfficerRulesScreen'
 import { HomeRedirect, RequireLanguage, RequireRole } from './guards'
 import { LanguageScreen } from './LanguageScreen'
 
@@ -53,6 +57,46 @@ export const appRoutes: RouteObject[] = [
       { path: routes.status, element: <RequireLanguage><RequireRole roles={['citizen']}><StatusListScreen /></RequireRole></RequireLanguage> },
       { path: routes.application(), element: <RequireLanguage><RequireRole roles={['citizen']}><ApplicationDetailScreen /></RequireRole></RequireLanguage> },
       { path: routes.verify, element: <VerifyScreen /> },
+      {
+        path: routes.officer,
+        element: (
+          <RequireLanguage>
+            <RequireRole roles={['district_officer', 'hq_admin']}>
+              <OfficerQueueScreen />
+            </RequireRole>
+          </RequireLanguage>
+        ),
+      },
+      {
+        path: routes.officerApplication(),
+        element: (
+          <RequireLanguage>
+            <RequireRole roles={['district_officer', 'hq_admin']}>
+              <OfficerApplicationScreen />
+            </RequireRole>
+          </RequireLanguage>
+        ),
+      },
+      {
+        path: routes.officerPartners,
+        element: (
+          <RequireLanguage>
+            <RequireRole roles={['district_officer', 'hq_admin']}>
+              <OfficerPartnersScreen />
+            </RequireRole>
+          </RequireLanguage>
+        ),
+      },
+      {
+        path: routes.officerRules,
+        element: (
+          <RequireLanguage>
+            <RequireRole roles={['district_officer', 'hq_admin']}>
+              <OfficerRulesScreen />
+            </RequireRole>
+          </RequireLanguage>
+        ),
+      },
       { path: '*', element: <NotFound /> },
     ],
   },

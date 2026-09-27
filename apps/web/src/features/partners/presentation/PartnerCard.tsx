@@ -4,7 +4,7 @@ import { SeededBadge } from '@/shared/components/SeededBadge'
 import { Button } from '@/shared/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card'
 import type { PartnerListItem } from '../domain/partnersView'
-import { HealthBadge } from './HealthBadge'
+import { HealthBadge } from '@/shared/components/HealthBadge'
 
 export function PartnerCard({
   item,

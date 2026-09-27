@@ -19,7 +19,13 @@ let n = 0
 /** Renders the real route table over a fresh mock backend with no latency. */
 export async function renderApp(
   path: string,
-  opts: { language?: Language | null; citizen?: boolean; profile?: ApplicantProfile; languageService?: MockLanguageService } = {},
+  opts: {
+    language?: Language | null
+    citizen?: boolean
+    profile?: ApplicantProfile
+    languageService?: MockLanguageService
+    officer?: 'district_officer' | 'hq_admin'
+  } = {},
 ) {
   localStorage.clear()
   const db = await MockDb.open({ storageKey: `ui-test-${++n}`, now: () => new Date('2026-09-26T09:00:00Z') })
@@ -37,6 +43,10 @@ export async function renderApp(
     user = (await repos.auth.verifyOtp('9876543210', DEMO_OTP)).user
     store.setUser(user)
     if (opts.profile) await repos.profile.save(user.id, opts.profile)
+  } else if (opts.officer) {
+    user = db.state.users.find((u) => u.role === opts.officer) ?? null
+    if (!user) throw new Error(`No seeded ${opts.officer} user found`)
+    store.setUser(user)
   }
   const router = createMemoryRouter(appRoutes, { initialEntries: [path] })
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } })

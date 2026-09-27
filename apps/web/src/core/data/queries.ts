@@ -1,7 +1,12 @@
-import type { ApplicantProfile } from '@ys/shared'
+import type { ApplicantProfile, ApplicationStage } from '@ys/shared'
 import { useQuery } from '@tanstack/react-query'
 import { useRepositories } from '../di/RepositoryProvider'
 import type { PartnerQuery } from './repositories/types'
+
+export interface QueueFilter {
+  districtId?: string
+  stages?: ApplicationStage[]
+}
 
 export const queryKeys = {
   catalog: ['catalog'] as const,
@@ -13,6 +18,8 @@ export const queryKeys = {
   preflight: (userId: string) => ['preflight', userId] as const,
   application: (id: string) => ['application', id] as const,
   notifications: (userId: string) => ['notifications', userId] as const,
+  officerQueue: (filter: QueueFilter) => ['officerQueue', filter.districtId, filter.stages?.join(',')] as const,
+  ruleHistory: (schemeId: string) => ['ruleHistory', schemeId] as const,
 }
 
 /** Schemes, rules, districts, projects: read-mostly reference data shared by every feature. */
@@ -59,4 +66,16 @@ export function useApplication(id: string) {
 export function useNotifications(userId: string) {
   const { notification } = useRepositories()
   return useQuery({ queryKey: queryKeys.notifications(userId), queryFn: () => notification.list(userId) })
+}
+
+/** An officer's pending queue: their own district, or every district for hq_admin. */
+export function useOfficerQueue(filter: QueueFilter) {
+  const { application } = useRepositories()
+  return useQuery({ queryKey: queryKeys.officerQueue(filter), queryFn: () => application.queue(filter) })
+}
+
+/** Full version history of a scheme's eligibility rule, latest first. */
+export function useRuleHistory(schemeId: string) {
+  const { catalog } = useRepositories()
+  return useQuery({ queryKey: queryKeys.ruleHistory(schemeId), queryFn: () => catalog.ruleHistory(schemeId) })
 }

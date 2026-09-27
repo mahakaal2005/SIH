@@ -576,5 +576,50 @@
       "stop": "पढ़ना रोकें",
       "unsupported": "इस ब्राउज़र में ज़ोर से पढ़ना समर्थित नहीं है"
     }
+  },
+  "officer": {
+    "nav": {
+      "partners": "साझेदार स्वास्थ्य",
+      "rules": "नियम"
+    },
+    "queue": {
+      "title": "लंबित सूची",
+      "stalledOnly": "केवल अटके हुए",
+      "callList": "कॉल सूची (सबसे पुराना पहले)",
+      "daysInStage": "इस चरण में {{days}} दिन से",
+      "stalledBadge": "अटका हुआ",
+      "empty": { "title": "कुछ भी लंबित नहीं", "body": "अभी इस सूची में कोई आवेदन प्रतीक्षा में नहीं है।" }
+    },
+    "detail": {
+      "title": "आवेदन {{receiptNo}}",
+      "timeline": {
+        "expected": "{{date}} तक अपेक्षित",
+        "reachedOn": "{{date}} को पहुंचा"
+      },
+      "actions": {
+        "title": "कार्रवाई",
+        "approve_pre_scrutiny": "पूर्व-जांच स्वीकृत करें",
+        "forward_to_bank": "बैंक को भेजें",
+        "sanction": "ऋण स्वीकृत करें",
+        "disburse": "राशि जारी करें",
+        "reject": "अस्वीकार करें",
+        "return_for_fix": "सुधार के लिए वापस भेजें"
+      },
+      "reasonPrompt": {
+        "title": "कारण",
+        "cta": "पुष्टि करें"
+      }
+    },
+    "partners": {
+      "title": "साझेदार स्वास्थ्य"
+    },
+    "rules": {
+      "title": "पात्रता नियम",
+      "schemePicker": "योजना",
+      "version": "संस्करण {{version}} — {{date}} से लागू",
+      "criteriaTitle": "मानदंड",
+      "priorityTitle": "प्राथमिकता वृद्धि",
+      "noHistory": "इस योजना के लिए कोई प्रकाशित संस्करण नहीं है।"
+    }
   }
 }

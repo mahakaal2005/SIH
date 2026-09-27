@@ -1,7 +1,7 @@
 # Progress
 
-**Current phase:** P11 Officer dashboard + rules admin (⬜ spec not written)
-**Pick up here:** write `phase-11-officer-rules-admin.md` (F7) and get it agreed before any P11 code.
+**Current phase:** P12 PWA + a11y polish (⬜ spec not written)
+**Pick up here:** write `phase-12-pwa-a11y.md` and get it agreed before any P12 code. This is the last phase in the table — check with the user whether further phases are wanted afterward.
 
 Status: ⬜ not started · 🟡 in progress · ✅ done. A phase spec must exist and be agreed before its work starts.
 
@@ -18,7 +18,7 @@ Status: ⬜ not started · 🟡 in progress · ✅ done. A phase spec must exist
 | P8 | Document checklist | F6 | ✅ | `phase-8-document-checklist.md` |
 | P9 | Status tracker | F8 | ✅ | `phase-9-status-tracker.md` |
 | P10 | Voice | F5 | ✅ | `phase-10-voice.md` |
-| P11 | Officer dashboard + rules admin | F7 | ⬜ | not written |
+| P11 | Officer dashboard + rules admin | F7 | ✅ | `phase-11-officer-rules-admin.md` |
 | P12 | PWA + a11y polish | - | ⬜ | not written |
 
 ## Checklist
@@ -33,7 +33,8 @@ Status: ⬜ not started · 🟡 in progress · ✅ done. A phase spec must exist
 - [x] P8 document checklist (commit pending this turn) — browser-checked, no bugs found, see log 2026-09-27-p8-document-checklist.md
 - [x] P9 status tracker (commit pending this turn) — gate green (15 script + 111 shared + 276 web tests); browser check not run (Claude-in-Chrome extension not connected this session), see log 2026-09-27-p9-status-tracker.md
 - [x] P10 voice (commit pending this turn) — gate green (15 script + 111 shared + 290 web tests); browser check not run (Claude-in-Chrome extension still disconnected), see log 2026-09-27-p10-voice.md
-- [ ] P11/P12: spec first, then build (order above)
+- [x] P11 officer dashboard + rules admin (commit pending this turn) — gate green (15 script + 111 shared + 305 web tests); browser check not run (Claude-in-Chrome extension still disconnected), see log 2026-09-27-p11-officer-rules-admin.md
+- [ ] P12: spec first, then build (order above)
 
 ## Deferred / Known issues
 - Product-data caveats (seeded values, approximate coordinates, Hindi names pending SOP verification) live in `CLAUDE.md` "Known issues"; do not duplicate here.

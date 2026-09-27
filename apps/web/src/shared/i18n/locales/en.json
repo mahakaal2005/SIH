@@ -576,5 +576,50 @@
       "stop": "Stop reading",
       "unsupported": "Read-aloud is not supported in this browser"
     }
+  },
+  "officer": {
+    "nav": {
+      "partners": "Partner health",
+      "rules": "Rules"
+    },
+    "queue": {
+      "title": "Pending queue",
+      "stalledOnly": "Stalled only",
+      "callList": "Call list (oldest first)",
+      "daysInStage": "{{days}} days in this stage",
+      "stalledBadge": "Stalled",
+      "empty": { "title": "Nothing pending", "body": "There are no applications waiting in this queue right now." }
+    },
+    "detail": {
+      "title": "Application {{receiptNo}}",
+      "timeline": {
+        "expected": "Expected by {{date}}",
+        "reachedOn": "Reached {{date}}"
+      },
+      "actions": {
+        "title": "Actions",
+        "approve_pre_scrutiny": "Approve pre-scrutiny",
+        "forward_to_bank": "Forward to bank",
+        "sanction": "Sanction loan",
+        "disburse": "Disburse",
+        "reject": "Reject",
+        "return_for_fix": "Send back for correction"
+      },
+      "reasonPrompt": {
+        "title": "Reason",
+        "cta": "Confirm"
+      }
+    },
+    "partners": {
+      "title": "Partner health"
+    },
+    "rules": {
+      "title": "Eligibility rules",
+      "schemePicker": "Scheme",
+      "version": "Version {{version}} — effective {{date}}",
+      "criteriaTitle": "Criteria",
+      "priorityTitle": "Priority boosts",
+      "noHistory": "No published versions for this scheme."
+    }
   }
 }
